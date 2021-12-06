@@ -1,5 +1,6 @@
 import ArticleComponent from "@/components/ArticleComponent";
 import axios from "axios";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
 
@@ -13,6 +14,7 @@ const getArticles = async () => {
 export default function Home() {
   // query the API function
   const { data, isLoading } = useQuery("articles", getArticles);
+  const { data: session } = useSession();
 
   return (
     <>
@@ -23,6 +25,7 @@ export default function Home() {
 
       {/* TODO: Homepage */}
       <main>
+        {session && <button onClick={() => signOut()}>Log out</button>}
         <div>Homepage</div>
         {/* Loading state needs error state */}
         {isLoading && <p>Loading...</p>}
@@ -43,4 +46,21 @@ export default function Home() {
       </main>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (session && session.user.role === "Writer") {
+    return {
+      redirect: {
+        destination: `/writer/${session.id}/profile`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }

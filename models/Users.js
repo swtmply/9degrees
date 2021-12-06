@@ -7,6 +7,8 @@ const userSchema = new Schema(
     password: String,
     role: String,
 
+    categories: [String],
+
     socials: {
       type: Object,
       facebook: { type: String, default: "" },

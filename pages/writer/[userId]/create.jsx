@@ -9,6 +9,9 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import ImageUpload from "@/components/ImageUpload";
 import imageUpload from "@/lib/imageUpload";
+import Input from "@/components/Input";
+import { Listbox } from "@headlessui/react";
+import { categoryList } from "pages/auth/register";
 
 // dynamic import para dun sa word like textarea
 const Editor = dynamic(
@@ -23,27 +26,23 @@ const addToDrafts = async (data) => {
   return await axios.post("/api/articles", data);
 };
 
-export default function Create() {
+export default function Create({ user }) {
   // form state
   const [data, setData] = useState({
     title: "",
     image: "",
     body: "",
-    writer: "",
+    writer: user?.name,
     category: "",
   });
   // textarea editor state
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   // image state for upload
   const [image, setImage] = useState();
+  const [category, setCategory] = useState(user?.categories[0]);
 
   // mutation variable for api call
   const mutation = useMutation(addToDrafts);
-
-  // handle change for inputs
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
 
   // textarea change
   const onEditorStateChange = (editorState) => {
@@ -67,6 +66,7 @@ export default function Create() {
 
     // set data image to url of image
     data.image = upload.url;
+    data.category = category;
 
     // API call
     mutation.mutate(data);
@@ -84,19 +84,15 @@ export default function Create() {
 
         {/* form for article */}
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-4">
-          <div className="flex flex-col space-y-2">
-            <input
-              className="font-bold text-3xl tracking-wide outline-none py-4"
-              type="text"
-              name="title"
-              onChange={handleChange}
-              placeholder="Title"
-              defaultValue="Title"
-            />
-          </div>
+          <Input
+            name="title"
+            type="text"
+            label="Title"
+            data={data}
+            setData={setData}
+          />
           <div className="flex flex-col space-y-2">
             <label className="font-bold text-2xl tracking-wide">Body:</label>
-            {/* Text Area */}
             <Editor
               editorState={editorState}
               onEditorStateChange={onEditorStateChange}
@@ -104,31 +100,18 @@ export default function Create() {
               editorClassName="mt-2 p-10"
             />
           </div>
-          <div className="flex flex-col space-y-2">
-            <label className="font-bold text-2xl tracking-wide">Writer:</label>
-            <input
-              className="border-b border-gray-300 outline-none p-2 focus:border-black"
-              type="text"
-              name="writer"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="flex flex-col space-y-2">
-            <label className="font-bold text-2xl tracking-wide">
-              Category:
-            </label>
-            <select
-              className="border-b border-gray-300 outline-none p-2 focus:border-black bg-transparent"
-              name="category"
-              onChange={handleChange}
-            >
-              <option value="">--- Select Category ---</option>
-              <option value="Nature">Nature</option>
-              <option value="Lifestyle">Lifestyle</option>
-              <option value="Technology">Technology</option>
-              <option value="News">News</option>
-            </select>
-          </div>
+
+          <Listbox value={category} onChange={setCategory}>
+            <Listbox.Button>{category}</Listbox.Button>
+            <Listbox.Options>
+              {user?.categories.map((c) => (
+                <Listbox.Option key={c} value={c}>
+                  {c}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Listbox>
+
           <div>
             <button className="p-2 bg-blue-500 text-white" type="submit">
               Submit to Drafts
@@ -138,4 +121,14 @@ export default function Create() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const res = await axios
+    .get(`http://localhost:3000/api/user/${context.query.userId}`)
+    .then((res) => res.data);
+
+  return {
+    props: { user: res.user },
+  };
 }

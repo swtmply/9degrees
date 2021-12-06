@@ -65,11 +65,18 @@ export default NextAuth({
   callbacks: {
     jwt: ({ token, user }) => {
       // TODO: return details of user to token
+      if (user) {
+        token.role = user.role;
+      }
+
       return token;
     },
+
+    // name, email, image, id = mongodb id ng user
     session: ({ session, token }) => {
       if (token) {
         session.id = token.sub;
+        session.user.role = token.role;
       }
 
       return session;
