@@ -12,6 +12,7 @@ import imageUpload from "@/lib/imageUpload";
 import Input from "@/components/Input";
 import { Listbox } from "@headlessui/react";
 import { categoryList } from "pages/auth/register";
+import { getSession } from "next-auth/react";
 
 // dynamic import para dun sa word like textarea
 const Editor = dynamic(
@@ -124,8 +125,10 @@ export default function Create({ user }) {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
   const res = await axios
-    .get(`http://localhost:3000/api/user/${context.query.userId}`)
+    .get(`http://localhost:3000/api/user/${session.id}`)
     .then((res) => res.data);
 
   return {

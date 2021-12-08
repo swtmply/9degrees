@@ -1,16 +1,21 @@
 import axios from "axios";
-import React from "react";
+import { signOut, useSession } from "next-auth/react";
 
-export default function UserProfile({ user }) {
-  return <div>{JSON.stringify(user, null, 2)}</div>;
-}
-
-export async function getServerSideProps(context) {
+export const getUser = async (id) => {
   const res = await axios
-    .get(`http://localhost:3000/api/user/${context.query.userId}`)
+    .get(`http://localhost:3000/api/user/${id}`)
     .then((res) => res.data);
 
-  return {
-    props: { user: res.user },
-  };
+  return res;
+};
+
+export default function UserProfile() {
+  const { data: session } = useSession();
+
+  return (
+    <div>
+      <p>Hello, {session?.user.name}</p>
+      <button onClick={() => signOut()}>Logout</button>
+    </div>
+  );
 }

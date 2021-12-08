@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("/fonts/RobotoMono-Regular.ttf");
+@import url("/fonts/ROCKB.TTF");
+
+article > div > p {
+  margin: 2em 0;
+}
+
+article > div > p > span {
+  text-align: justify;
+  font-size: 1.5rem !important;
+}
+
+ins {
+  font-size: 1.5rem !important;
+}

@@ -26,7 +26,7 @@ export default function Home() {
       {/* TODO: Homepage */}
       <main>
         {session && <button onClick={() => signOut()}>Log out</button>}
-        <div>Homepage</div>
+        <div className="text-xl">Homepage</div>
         {/* Loading state needs error state */}
         {isLoading && <p>Loading...</p>}
         {!isLoading && (
