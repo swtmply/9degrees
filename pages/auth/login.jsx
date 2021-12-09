@@ -45,7 +45,7 @@ export default function Login() {
           />
           <div>
             <button
-              className="px-4 py-2 bg-blue-500 text-white font-bold"
+              className="px-4 py-2 bg-confusedPurple text-white font-bold"
               type="submit"
             >
               Submit to Drafts

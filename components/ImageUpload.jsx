@@ -4,6 +4,8 @@ import Image from "next/image";
 // NOTE: buo na rin siya, styling na lang kulang
 // TODO: Styling
 
+import placeholder from "public/placeholder-image.png";
+
 export default function ImageUpload({ setImage }) {
   // image preview state para lang makita yung nilagay na image
   // dun sa input
@@ -14,11 +16,7 @@ export default function ImageUpload({ setImage }) {
       {/* Image Input needs styling */}
       <label htmlFor="imageInput">
         Upload Image...
-        <Image
-          src={imagePreview || "/placeholder.jpg"}
-          width="300px"
-          height="300px"
-        />
+        <Image src={imagePreview || placeholder} width="300px" height="300px" />
       </label>
       <input
         className="hidden outline-none"

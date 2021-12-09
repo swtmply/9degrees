@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
     case "GET":
       try {
-        const articles = await Articles.find({});
+        const articles = await (await Articles.find({})).reverse();
 
         if (articles) res.status(200).json({ articles });
       } catch (error) {

@@ -1,7 +1,9 @@
 import axios from "axios";
+import { convertFromRaw, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment";
 import Image from "next/image";
+import { useRef } from "react";
 
 // Needs Styling
 // final location (pending)
@@ -9,11 +11,10 @@ import Image from "next/image";
 export default function Article({ article }) {
   // raw content for article body medyo mahirap paliwanaw
   // pero eto yung galing dun sa parang word na textarea
+  const firstBlock = convertFromRaw(JSON.parse(article.body)).getFirstBlock();
   const rawContentState = JSON.parse(article.body);
-  const markup = draftToHtml(rawContentState, {
-    trigger: "#",
-    separator: " ",
-  });
+  const markup = draftToHtml(rawContentState, {});
+  const containerRef = useRef();
 
   return (
     <div className="bg-gray-200 flex justify-center ">
@@ -37,6 +38,7 @@ export default function Article({ article }) {
           {/* and then ilalagay yung content */}
           <article className="article-content">
             <div
+              ref={containerRef}
               dangerouslySetInnerHTML={{
                 __html: markup,
               }}
