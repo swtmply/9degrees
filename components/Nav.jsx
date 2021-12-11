@@ -3,7 +3,7 @@ import { HomeIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
 import wordMark from "public/wordmark-white.svg";
-import iconMark from "public/favicon-black.svg";
+import iconMark from "public/iconmark-white.svg";
 
 import Image from "next/image";
 import { SearchIcon } from "@heroicons/react/solid";
@@ -34,8 +34,8 @@ export default function Nav() {
           <Image
             src={iconMark}
             alt="Nine Degree Icon Mark"
-            height="32px"
-            width="32px"
+            height="64px"
+            width="64px"
             className="cursor-pointer"
           />
         ) : (

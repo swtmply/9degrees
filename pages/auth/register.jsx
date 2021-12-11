@@ -1,11 +1,13 @@
+import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
+import { categoryList, roles } from "@/lib/constants";
 import { Listbox } from "@headlessui/react";
 import axios from "axios";
 import { useState } from "react";
 import { useMutation } from "react-query";
 
-const roles = ["Writer", "Head"];
-export const categoryList = ["Nature", "Lifestyle", "Technology", "News"];
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
+import { useRouter } from "next/router";
 
 const createUser = async (data) => {
   return await axios.post("/api/auth/signup", data);
@@ -18,26 +20,19 @@ export default function Register() {
     email: "",
     password: "",
   });
+  const router = useRouter();
 
   const [role, setRole] = useState(roles[0]);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const mutation = useMutation(createUser);
 
-  const handleCheckBox = (e) => {
-    if (!selectedCategories.some((c) => c === e.target.value)) {
-      setSelectedCategories((prev) => [...prev, e.target.value]);
-    } else {
-      setSelectedCategories(
-        selectedCategories.filter((item) => item !== e.target.value)
-      );
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     mutation.mutate({ ...data, role, categories: selectedCategories });
+
+    // if (mutation.isSuccess) router.push("/auth/login");
     // console.log(data, selectedCategories, role);
   };
 
@@ -76,35 +71,47 @@ export default function Register() {
           />
 
           <Listbox value={role} onChange={setRole}>
-            <Listbox.Button>{role}</Listbox.Button>
-            <Listbox.Options>
-              {roles.map((role) => (
-                <Listbox.Option key={role} value={role}>
-                  {role}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
+            {({ open }) => (
+              <div className="relative">
+                <Listbox.Button className="flex justify-between items-center rounded-md w-full px-4 py-2 bg-yellowwallow font-bold">
+                  <span> {role} </span>
+                  {open ? (
+                    <ChevronUpIcon className="w-6 h-6" />
+                  ) : (
+                    <ChevronDownIcon className="w-6 h-6" />
+                  )}
+                </Listbox.Button>
+                <Listbox.Options className="absolute w-full mt-2 py-2 bg-yellowwallow rounded-md font-semibold">
+                  {roles.map((role) => (
+                    <Listbox.Option
+                      className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
+                      key={role}
+                      value={role}
+                    >
+                      {({ selected }) => (
+                        <span className={`${selected ? "font-bold" : ""}`}>
+                          {role}
+                        </span>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </div>
+            )}
           </Listbox>
 
-          {categoryList.map((category, i) => (
-            <div key={i}>
-              <input
-                type="checkbox"
-                id={`c-${i}`}
-                value={category}
-                name={category}
-                onChange={handleCheckBox}
-              />
-              <label htmlFor={`c-${i}`}>{category}</label>
-            </div>
-          ))}
+          <Checkbox
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            items={categoryList}
+          />
 
           <div>
             <button
-              className="px-4 py-2 bg-blue-500 text-white font-bold"
+              className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-md"
               type="submit"
             >
-              Submit to Drafts
+              Register
             </button>
           </div>
         </form>

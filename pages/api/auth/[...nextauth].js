@@ -13,17 +13,17 @@ export default NextAuth({
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
         // database call
         await mongoDBConnect();
 
-        const username = credentials.username;
+        const email = credentials.email;
         const password = credentials.password;
 
-        const user = await Users.findOne({ username });
+        const user = await Users.findOne({ email });
 
         if (user) {
           if (!user.password) {

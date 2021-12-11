@@ -8,6 +8,7 @@ const articleSchema = new Schema(
 
     writer: String,
     category: String,
+    subsection: String,
 
     status: {
       type: String,

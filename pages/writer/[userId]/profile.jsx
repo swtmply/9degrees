@@ -15,9 +15,12 @@ export default function UserProfile() {
   const router = useRouter();
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <p>Hello, {session?.user.name}</p>
-      <button onClick={() => router.push(`/writer/${session?.id}/create`)}>
+      <button
+        className="font-semibold bg-padeepBlue text-white px-4 py-2 rounded-md"
+        onClick={() => router.push(`/writer/${session?.id}/create`)}
+      >
         Create Article
       </button>
       <button onClick={() => signOut()}>Logout</button>

@@ -7,44 +7,51 @@ import { getSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import Image from "next/image";
+import ReactPaginate from "react-paginate";
 
 import placeholder from "../public/PUBMAT SAMPLE.jpg";
-import MenuDropdown from "@/components/MenuDropdown";
-import Link from "next/link";
+import adPlaceholder from "../public/ad-placeholder.png";
 
-// get all articles API function
-const getArticles = async () => {
-  return axios.get("/api/articles").then((res) => res.data);
-};
+import { Navigation } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import NavMenu from "@/components/NavMenu";
+import {
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  XCircleIcon,
+} from "@heroicons/react/solid";
 
 export default function Home() {
   // query the API function
-  const { data, isLoading } = useQuery("articles", getArticles);
-  const [navbarState, setNavbarState] = useState(false);
+  const getArticles = () => axios.get(`/api/articles`).then((res) => res.data);
 
-  const handleScroll = () => {
-    if (window.scrollY >= 630) {
-      setNavbarState(true);
-    } else {
-      setNavbarState(false);
-    }
+  const { data: sliderArticles, isLoading } = useQuery(
+    ["articles"],
+    getArticles
+  );
+
+  const [pageNumber, setPageNumber] = useState(0);
+  const articlePerPage = 5;
+  const pagesVisited = pageNumber * articlePerPage;
+
+  const pageCount = Math.ceil(sliderArticles?.articles.length / articlePerPage);
+
+  const handlePageClick = (e) => {
+    const selectedPage = e.selected;
+
+    setPageNumber(selectedPage);
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  });
 
   // TODO: Loading State
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
+    <div className="min-h-screen w-full flex flex-col font-Roboto">
       <Nav />
-      <main className="w-full flex flex-col justify-center items-center space-y-5">
+      <main className="w-full flex flex-col justify-center items-center space-y-10">
+        {/* Hero Image / Cover Story */}
         <div className="w-full h-[45vw] relative bg-pinkaru">
           <Image
             src={placeholder}
@@ -53,45 +60,81 @@ export default function Home() {
             objectFit="cover"
           />
         </div>
-        <div
-          className={`transition-colors ${
-            navbarState ? "bg-black text-white" : "bg-yellowwallow text-black"
-          } w-[80%] sticky top-4 z-10 py-4 flex justify-around rounded-lg hover:bg-black focus-within:bg-black focus-within:text-white hover:text-white`}
-        >
-          <MenuDropdown
-            header="news"
-            items={["Nation", "University", "alt0176"]}
-          />
-          <MenuDropdown
-            header="features"
-            items={["Profiles", "Opinion", "In Photos"]}
-          />
-          <MenuDropdown
-            header="community"
-            items={["Catwalk", "Anonas Street"]}
-          />
-          <MenuDropdown
-            header="Culture and Lifestyle"
-            items={["Life", "Entertainment", "Food and Travel", "New Normal"]}
-          />
-          <Link href="/">
-            <p className="font-bold">SO LIT!</p>
-          </Link>
-          <MenuDropdown header="9°" items={["Cover Story", "We Are 9°"]} />
-        </div>
-        {/* TODO: 4 latest articles component */}
-        <div className="flex">
-          {data?.articles.slice(0, 4).map((article) => (
-            <ArticleComponent key={article._id} article={article} />
-          ))}
-        </div>
-        <div className="w-[80%] pt-32">
-          <h1 className="font-black tracking-wide text-2xl mb-4">Latest</h1>
-          <div className="space-y-8">
-            {data?.articles.map((article) => (
-              <LatestArticle key={article._id} article={article} />
+        {/* Navbar Menu */}
+        <NavMenu />
+        {/* 4 latest articles component */}
+        <div className="max-w-[90%] relative">
+          <Swiper
+            modules={[Navigation]}
+            navigation={{ nextEl: ".prev-button", prevEl: ".next-button" }}
+            spaceBetween={0}
+            slidesPerView={4}
+          >
+            {sliderArticles?.articles.map((article) => (
+              <SwiperSlide className="max-w-[400px]" key={article._id}>
+                <ArticleComponent article={article} />
+              </SwiperSlide>
             ))}
+          </Swiper>
+
+          <ChevronLeftIcon className="absolute top-[160px] cursor-pointer ring ring-yellowwallow bg-white rounded-full -left-4 z-[9] next-button w-10 h-10" />
+          <ChevronRightIcon className="absolute top-[160px] cursor-pointer ring ring-yellowwallow bg-white rounded-full -right-4 z-[9] prev-button w-10 h-10" />
+        </div>
+
+        {/* Ad Space */}
+        <div className="w-[80%] h-[200px] bg-redtagging relative">
+          <Image src={adPlaceholder} layout="fill" objectFit="cover" />
+        </div>
+
+        {/* paginated articles */}
+        <div className="w-[80%] flex justify-between">
+          <div className="w-[80%]">
+            <h1 className="font-black tracking-wide text-2xl mb-4 uppercase">
+              Latest
+            </h1>
+            <div className="space-y-8 mb-8">
+              {sliderArticles?.articles
+                .slice(pagesVisited, pagesVisited + articlePerPage)
+                .map((article) => (
+                  <LatestArticle key={article._id} article={article} />
+                ))}
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                breakLabel={"..."}
+                pageCount={pageCount}
+                onPageChange={handlePageClick}
+                containerClassName={
+                  "pagination flex justify-between space-x-4 font-bold w-[30%]"
+                }
+                activeClassName={"active text-white"}
+                breakClassName={"font-bold"}
+                disabledClassName={"disabled"}
+              />
+            </div>
           </div>
+          {/* Ad Space */}
+          <div className="space-y-5">
+            <div className="w-[200px]">
+              <p className="uppercase font-semibold">Follow our Socials:</p>
+              <div className="flex space-x-4">
+                <XCircleIcon className="w-16 h-16" />
+                <XCircleIcon className="w-16 h-16" />
+                <XCircleIcon className="w-16 h-16" />
+              </div>
+            </div>
+            <div className="w-[200px] h-[400px] relative bg-confusedPurple">
+              <Image src={adPlaceholder} layout="fill" objectFit="cover" />
+            </div>
+            <div className="w-[200px] h-[700px] relative bg-degreen">
+              <Image src={adPlaceholder} layout="fill" objectFit="cover" />
+            </div>
+          </div>
+        </div>
+
+        {/* Ad Space */}
+        <div className="w-[80%] h-[200px] bg-padeepBlue relative">
+          <Image src={adPlaceholder} layout="fill" objectFit="cover" />
         </div>
       </main>
       <Footer />

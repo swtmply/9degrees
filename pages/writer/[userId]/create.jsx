@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { convertToRaw, EditorState } from "draft-js";
@@ -10,9 +10,11 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import ImageUpload from "@/components/ImageUpload";
 import imageUpload from "@/lib/imageUpload";
 import Input from "@/components/Input";
-import { Listbox } from "@headlessui/react";
-import { categoryList } from "pages/auth/register";
+import { Listbox, RadioGroup } from "@headlessui/react";
 import { getSession } from "next-auth/react";
+import { categoryList } from "@/lib/constants";
+import { CheckIcon } from "@heroicons/react/outline";
+import PopupDialog from "@/components/PopupDialog";
 
 // dynamic import para dun sa word like textarea
 const Editor = dynamic(
@@ -40,7 +42,13 @@ export default function Create({ user }) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   // image state for upload
   const [image, setImage] = useState();
-  const [category, setCategory] = useState(user?.categories[0]);
+  const [categories, setCategories] = useState(() => {
+    return categoryList.filter((cat, i) => cat.value === user?.categories[i]);
+  });
+  const [category, setCategory] = useState(categories[0]);
+  const [selectedSubsection, setselectedSubsection] = useState();
+
+  let [isOpen, setIsOpen] = useState(false);
 
   // mutation variable for api call
   const mutation = useMutation(addToDrafts);
@@ -67,10 +75,14 @@ export default function Create({ user }) {
 
     // set data image to url of image
     data.image = upload.url;
-    data.category = category;
+    data.category = category.value;
+    data.subsection = selectedSubsection;
 
     // API call
     mutation.mutate(data);
+    console.log(data);
+
+    setIsOpen(true);
   };
 
   return (
@@ -97,29 +109,68 @@ export default function Create({ user }) {
             <Editor
               editorState={editorState}
               onEditorStateChange={onEditorStateChange}
-              toolbarClassName="flex sticky top-0 z-50 !justify-center mx-auto"
-              editorClassName="mt-2 p-10"
+              toolbarClassName="flex sticky top-0 z-40 !justify-center mx-auto"
+              editorClassName="mt-2 px-4 bg-[#fff] shadow-lg min-h-screen"
             />
           </div>
 
-          <Listbox value={category} onChange={setCategory}>
-            <Listbox.Button>{category}</Listbox.Button>
-            <Listbox.Options>
-              {user?.categories.map((c) => (
-                <Listbox.Option key={c} value={c}>
-                  {c}
-                </Listbox.Option>
-              ))}
-            </Listbox.Options>
+          <Listbox value={category.value} onChange={setCategory}>
+            <div className="relative">
+              <Listbox.Button className="bg-yellowwallow w-full rounded-md font-bold flex justify-between px-4 py-2">
+                {category.name}
+              </Listbox.Button>
+              <Listbox.Options className="absolute w-full mb-2 py-2 bg-yellowwallow rounded-md font-semibold">
+                {categories.map((cat) => (
+                  <Listbox.Option
+                    className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
+                    key={cat.value}
+                    value={cat}
+                  >
+                    {cat.name}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </div>
           </Listbox>
 
+          <RadioGroup
+            value={selectedSubsection}
+            onChange={setselectedSubsection}
+          >
+            <div className="space-y-2">
+              {category.subsection &&
+                category?.subsection.map((sub) => (
+                  <RadioGroup.Option key={sub.value} value={sub.value}>
+                    {({ checked }) => (
+                      <div className="flex items-center space-x-4">
+                        <div
+                          className={`${
+                            checked
+                              ? "bg-yellowwallow ring-yellowwallow"
+                              : "ring-black"
+                          } ring rounded-full w-4 h-4`}
+                        >
+                          {checked && <CheckIcon className="w-4 h-4" />}
+                        </div>
+                        <span className="font-semibold">{sub.name}</span>
+                      </div>
+                    )}
+                  </RadioGroup.Option>
+                ))}
+            </div>
+          </RadioGroup>
+
           <div>
-            <button className="p-2 bg-blue-500 text-white" type="submit">
-              Submit to Drafts
+            <button
+              className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-md"
+              type="submit"
+            >
+              Submit to drafts
             </button>
           </div>
         </form>
       </div>
+      <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 }

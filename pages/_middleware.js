@@ -10,7 +10,11 @@ export async function middleware(req) {
   // could also check for any property on the session object,
   // like role === "admin" or name === "John Doe", etc.
 
-  if (pathname.includes("/articles") || pathname === "/")
+  if (
+    pathname.includes("/articles") ||
+    pathname === "/" ||
+    pathname.includes("/auth")
+  )
     return NextResponse.next();
 
   if (pathname.includes("/api") || token) return NextResponse.next();
