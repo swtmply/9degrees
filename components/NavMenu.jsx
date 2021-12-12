@@ -2,11 +2,11 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import MenuDropdown from "./MenuDropdown";
 
-export default function NavMenu() {
+export default function NavMenu({ breakpoint }) {
   const [navbarState, setNavbarState] = useState(false);
 
   const handleScroll = () => {
-    if (window.scrollY >= 700) {
+    if (window.scrollY >= breakpoint) {
       setNavbarState(true);
     } else {
       setNavbarState(false);
@@ -26,7 +26,7 @@ export default function NavMenu() {
       <div
         className={`transition-colors ${
           navbarState ? "bg-black text-white" : "bg-yellowwallow text-black"
-        } w-[80%] py-4 px-16 flex justify-around rounded-lg hover:bg-black focus-within:bg-black focus-within:text-white hover:text-white`}
+        } w-[80%] py-4 px-16 flex justify-around rounded-lg hover:bg-black  hover:text-white`}
       >
         <MenuDropdown
           header="news"

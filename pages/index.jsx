@@ -23,9 +23,11 @@ import {
   XCircleIcon,
 } from "@heroicons/react/solid";
 
+export const getArticles = () =>
+  axios.get(`/api/articles`).then((res) => res.data);
+
 export default function Home() {
   // query the API function
-  const getArticles = () => axios.get(`/api/articles`).then((res) => res.data);
 
   const { data: sliderArticles, isLoading } = useQuery(
     ["articles"],
@@ -48,7 +50,7 @@ export default function Home() {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="min-h-screen w-full flex flex-col font-Roboto">
+    <div className="min-h-screen w-full flex flex-col">
       <Nav />
       <main className="w-full flex flex-col justify-center items-center space-y-10">
         {/* Hero Image / Cover Story */}
@@ -61,7 +63,7 @@ export default function Home() {
           />
         </div>
         {/* Navbar Menu */}
-        <NavMenu />
+        <NavMenu breakpoint={700} />
         {/* 4 latest articles component */}
         <div className="max-w-[90%] relative">
           <Swiper
@@ -70,7 +72,7 @@ export default function Home() {
             spaceBetween={0}
             slidesPerView={4}
           >
-            {sliderArticles?.articles.map((article) => (
+            {sliderArticles?.articles.slice(0, 10).map((article) => (
               <SwiperSlide className="max-w-[400px]" key={article._id}>
                 <ArticleComponent article={article} />
               </SwiperSlide>

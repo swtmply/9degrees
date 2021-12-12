@@ -13,7 +13,7 @@ import Input from "@/components/Input";
 import { Listbox, RadioGroup } from "@headlessui/react";
 import { getSession } from "next-auth/react";
 import { categoryList } from "@/lib/constants";
-import { CheckIcon } from "@heroicons/react/outline";
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/outline";
 import PopupDialog from "@/components/PopupDialog";
 
 // dynamic import para dun sa word like textarea
@@ -48,7 +48,7 @@ export default function Create({ user }) {
   const [category, setCategory] = useState(categories[0]);
   const [selectedSubsection, setselectedSubsection] = useState();
 
-  let [isOpen, setIsOpen] = useState(false);
+  let [isOpen, setIsOpen] = useState(true);
 
   // mutation variable for api call
   const mutation = useMutation(addToDrafts);
@@ -80,9 +80,6 @@ export default function Create({ user }) {
 
     // API call
     mutation.mutate(data);
-    console.log(data);
-
-    setIsOpen(true);
   };
 
   return (
@@ -90,10 +87,6 @@ export default function Create({ user }) {
       <div className="flex flex-col bg-white shadow-lg">
         {/* Image Upload component */}
         <ImageUpload setImage={setImage} />
-
-        {/* if mutation is success or failed */}
-        {mutation.isSuccess && <p>Success</p>}
-        {mutation.isError && <p>{mutation.error.data}</p>}
 
         {/* form for article */}
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-4">
@@ -116,10 +109,11 @@ export default function Create({ user }) {
 
           <Listbox value={category.value} onChange={setCategory}>
             <div className="relative">
-              <Listbox.Button className="bg-yellowwallow w-full rounded-md font-bold flex justify-between px-4 py-2">
+              <Listbox.Button className="bg-yellowwallow w-full rounded-md font-bold flex items-center justify-between px-4 py-2">
                 {category.name}
+                <ChevronDownIcon className="w-4 h-4" />
               </Listbox.Button>
-              <Listbox.Options className="absolute w-full mb-2 py-2 bg-yellowwallow rounded-md font-semibold">
+              <Listbox.Options className="absolute w-full mt-2 py-2 bg-yellowwallow rounded-md font-semibold">
                 {categories.map((cat) => (
                   <Listbox.Option
                     className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
@@ -137,7 +131,7 @@ export default function Create({ user }) {
             value={selectedSubsection}
             onChange={setselectedSubsection}
           >
-            <div className="space-y-2">
+            <div className="px-2 space-y-2">
               {category.subsection &&
                 category?.subsection.map((sub) => (
                   <RadioGroup.Option key={sub.value} value={sub.value}>
@@ -170,7 +164,9 @@ export default function Create({ user }) {
           </div>
         </form>
       </div>
-      <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      {mutation.isSuccess && (
+        <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      )}
     </div>
   );
 }

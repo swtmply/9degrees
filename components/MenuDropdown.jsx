@@ -7,7 +7,6 @@ import React, { useRef, useState } from "react";
 export default function MenuDropdown({ header, items, href = "/" }) {
   const buttonRef = useRef(null);
   const [openState, setOpenState] = useState(false);
-  const [clickable, setClickable] = useState(false);
   const [menuState, setMenuState] = useState(false);
   const router = useRouter();
 
@@ -18,9 +17,6 @@ export default function MenuDropdown({ header, items, href = "/" }) {
 
   const toggleMenu = (open) => {
     // log the current open state in React (toggle open state)
-
-    setClickable((clickable) => !clickable);
-
     setOpenState((openState) => !openState);
     // toggle the menu by clicking on buttonRef
     buttonRef?.current?.click(); // eslint-disable-line
@@ -47,7 +43,12 @@ export default function MenuDropdown({ header, items, href = "/" }) {
       as="div"
       className="relative"
       onClick={() => {
-        if (clickable) router.push(href);
+        // setOpenState((openState) => !openState);
+        clearTimeout(timeout);
+        if (openState && !menuState) {
+          setOpenState(!openState);
+          router.push(href);
+        }
       }}
     >
       {({ open }) => (

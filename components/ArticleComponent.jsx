@@ -15,7 +15,7 @@ export function LatestArticle({ article }) {
 
   return (
     <div>
-      <Link href={`/articles/${article._id}`}>
+      <Link href={`/articles/${categories[0].value}/${article._id}`}>
         <div className="flex items-end space-x-4">
           <div className="w-[400px] h-[400px] relative cursor-pointer">
             <Image src={article.image} layout="fill" objectFit="cover" />
@@ -49,7 +49,7 @@ export function LatestArticle({ article }) {
 
 export default function ArticleComponent({ article }) {
   return (
-    <Link href={`/articles/${article._id}`}>
+    <Link href={`/articles/${article.category}/${article._id}`}>
       <div className="flex flex-col cursor-pointer relative">
         <Image src={article.image} width="400px" height="400px" />
 
