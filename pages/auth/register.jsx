@@ -1,5 +1,5 @@
-import Checkbox from "@/components/Checkbox";
-import Input from "@/components/Input";
+import Checkbox from "@/components/Forms/Checkbox";
+import Input from "@/components/Forms/Input";
 import { categoryList, roles } from "@/lib/constants";
 import { Listbox } from "@headlessui/react";
 import axios from "axios";

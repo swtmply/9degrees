@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors");
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   mode: "jit",
@@ -9,6 +10,11 @@ module.exports = {
       fontFamily: {
         mono: ["Roboto Mono", "monospace"],
       },
+    },
+
+    screens: {
+      xs: "400px",
+      ...defaultTheme.screens,
     },
 
     colors: {

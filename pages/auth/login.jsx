@@ -1,4 +1,4 @@
-import Input from "@/components/Input";
+import Input from "@/components/Forms/Input";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useState } from "react";

@@ -1,16 +1,15 @@
 import { categoryList } from "@/lib/constants";
 import axios from "axios";
-import { convertFromRaw, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment";
 import Image from "next/image";
 import { useRef } from "react";
 
 import placeholder from "public/ad-placeholder.png";
-import Nav from "@/components/Nav";
-import NavMenu from "@/components/NavMenu";
+import Nav from "@/components/Navigation/Nav";
+import NavMenu from "@/components/Navigation/NavMenu";
 import Footer from "@/components/Footer";
-import { XCircleIcon } from "@heroicons/react/solid";
+import VerticalAd from "@/components/Ads/VerticalAd";
 
 // Needs Styling
 // final location (pending)
@@ -26,7 +25,7 @@ export default function Article({ article }) {
 
   return (
     <div className="min-h-screen w-full flex flex-col gap-20">
-      <Nav />
+      <Nav breakpoint={400} />
 
       <main className="space-y-20 grid place-items-center">
         <div className="relative w-full h-[40vh]">
@@ -82,22 +81,7 @@ export default function Article({ article }) {
               ></div>
             </article>
 
-            <div className="space-y-5">
-              <div className="w-[200px]">
-                <p className="uppercase font-semibold">Follow our Socials:</p>
-                <div className="flex space-x-4">
-                  <XCircleIcon className="w-16 h-16" />
-                  <XCircleIcon className="w-16 h-16" />
-                  <XCircleIcon className="w-16 h-16" />
-                </div>
-              </div>
-              <div className="w-[200px] h-[400px] relative bg-confusedPurple">
-                <Image src={placeholder} layout="fill" objectFit="cover" />
-              </div>
-              <div className="w-[200px] h-[700px] relative bg-degreen">
-                <Image src={placeholder} layout="fill" objectFit="cover" />
-              </div>
-            </div>
+            <VerticalAd />
           </div>
         </div>
 

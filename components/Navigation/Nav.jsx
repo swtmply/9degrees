@@ -10,11 +10,11 @@ import { SearchIcon, XIcon } from "@heroicons/react/solid";
 import { getArticles } from "pages";
 import { useQuery } from "react-query";
 
-export default function Nav() {
+export default function Nav({ breakpoint }) {
   const [navbarState, setNavbarState] = useState(false);
 
   const handleScroll = () => {
-    if (window.scrollY >= 630) {
+    if (window.scrollY >= breakpoint) {
       setNavbarState(true);
     } else {
       setNavbarState(false);
@@ -29,7 +29,7 @@ export default function Nav() {
     };
   });
 
-  const { data, isLoading } = useQuery(["articles"], getArticles);
+  const { data } = useQuery(["articles"], getArticles);
 
   const [searchState, setSearchState] = useState(false);
   const [filteredArticles, setfilteredArticles] = useState([]);
@@ -38,15 +38,13 @@ export default function Nav() {
     if (e.target.value === "") {
       setfilteredArticles([]);
     } else {
-      const filteredArray = data.articles.filter((value) => {
+      const filteredArray = data?.articles.filter((value) => {
         return value.title.toLowerCase().includes(e.target.value.toLowerCase());
       });
 
       setfilteredArticles(filteredArray);
     }
   };
-
-  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="flex justify-between items-center w-full bg-black px-4 py-2 fixed top-0 z-10 text-white">

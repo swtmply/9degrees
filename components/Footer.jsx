@@ -30,26 +30,26 @@ export default function Footer() {
             <XCircleIcon className="w-16 h-16" />
           </div>
         </div>
-        <div className="flex w-[80%] justify-between">
+        <div className="grid grid-cols-2 gap-2 lg:flex lg:w-[80%] min-h-max justify-between">
           <div>
-            <p className="uppercase font-bold mb-8">news</p>
+            <p className="uppercase font-bold lg:mb-8 mb-4">news</p>
             <p>Nation</p>
             <p>University</p>
             <p>alt0176</p>
           </div>
           <div>
-            <p className="uppercase font-bold mb-8">features</p>
+            <p className="uppercase font-bold lg:mb-8 mb-4">features</p>
             <p>Profiles</p>
             <p>Opinion</p>
             <p>In Photos</p>
           </div>
           <div>
-            <p className="uppercase font-bold mb-8">community</p>
+            <p className="uppercase font-bold lg:mb-8 mb-4">community</p>
             <p>Catwalk</p>
             <p>Anonas Street</p>
           </div>
           <div>
-            <p className="uppercase font-bold mb-8">
+            <p className="uppercase font-bold lg:mb-8 mb-4">
               Cultures and <br /> Lifestyle
             </p>
             <p>Life</p>
@@ -58,10 +58,10 @@ export default function Footer() {
             <p>New normal</p>
           </div>
           <div>
-            <p className="uppercase font-bold mb-8">so lit!</p>
+            <p className="uppercase font-bold lg:mb-8 mb-4">so lit!</p>
           </div>
           <div>
-            <p className="uppercase font-bold mb-8">9°</p>
+            <p className="uppercase font-bold lg:mb-8 mb-4">9°</p>
             <p>Cover Story</p>
             <p>We Are 9°</p>
           </div>

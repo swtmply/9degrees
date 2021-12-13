@@ -22,7 +22,7 @@ export default function NavMenu({ breakpoint }) {
   });
 
   return (
-    <div className="w-full flex justify-center sticky top-4 z-10">
+    <div className="lg:w-full lg:flex hidden justify-center sticky top-4 z-10">
       <div
         className={`transition-colors ${
           navbarState ? "bg-black text-white" : "bg-yellowwallow text-black"

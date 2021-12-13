@@ -7,9 +7,9 @@ import axios from "axios";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import ImageUpload from "@/components/ImageUpload";
+import ImageUpload from "@/components/Forms/ImageUpload";
 import imageUpload from "@/lib/imageUpload";
-import Input from "@/components/Input";
+import Input from "@/components/Forms/Input";
 import { Listbox, RadioGroup } from "@headlessui/react";
 import { getSession } from "next-auth/react";
 import { categoryList } from "@/lib/constants";
@@ -113,7 +113,7 @@ export default function Create({ user }) {
                 {category.name}
                 <ChevronDownIcon className="w-4 h-4" />
               </Listbox.Button>
-              <Listbox.Options className="absolute w-full mt-2 py-2 bg-yellowwallow rounded-md font-semibold">
+              <Listbox.Options className="absolute w-full bottom-0 mb-12 py-2 bg-yellowwallow rounded-md font-semibold">
                 {categories.map((cat) => (
                   <Listbox.Option
                     className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
