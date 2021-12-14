@@ -1,4 +1,4 @@
-import { Menu } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -84,7 +84,9 @@ export default function MenuDropdown({ header, items, href = "/" }) {
                 <Menu.Item>
                   {({ active }) => (
                     <Link
-                      href={`${href}/${item.toLowerCase().replace(/\s/g, "-")}`}
+                      href={`/articles/s/${item
+                        .toLowerCase()
+                        .replace(/\s/g, "-")}`}
                     >
                       {item}
                     </Link>

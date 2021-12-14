@@ -1,4 +1,5 @@
 import { categoryList } from "@/lib/constants";
+import mongoDBConnect from "@/lib/mongoDBConnect";
 import axios from "axios";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment";
@@ -10,6 +11,7 @@ import Nav from "@/components/Navigation/Nav";
 import NavMenu from "@/components/Navigation/NavMenu";
 import Footer from "@/components/Footer";
 import VerticalAd from "@/components/Ads/VerticalAd";
+import Articles from "@/models/Articles";
 
 // Needs Styling
 // final location (pending)
@@ -24,10 +26,10 @@ export default function Article({ article }) {
   );
 
   return (
-    <div className="min-h-screen w-full flex flex-col gap-20">
+    <div className="min-h-screen w-full flex flex-col">
       <Nav breakpoint={400} />
 
-      <main className="space-y-20 grid place-items-center">
+      <main className="mt-20 w-full flex flex-col justify-center items-center space-y-10">
         <div className="relative w-full h-[40vh]">
           <Image
             src={placeholder}
@@ -48,11 +50,11 @@ export default function Article({ article }) {
             </span>
           </p>
 
-          <h1 className="text-6xl font-bold max-w-[80%] text-center">
+          <h1 className="lg:text-6xl text-3xl font-bold max-w-[80%] text-center">
             {article.title}
           </h1>
 
-          <p className="font-mono text-lg space-x-2">
+          <p className="font-mono text-xs space-x-2">
             <span className="font-black">By: {article.writer}</span>
             <span className="text-gray-400">
               {moment(article.createdAt).startOf("hour").fromNow()}
@@ -61,7 +63,7 @@ export default function Article({ article }) {
         </div>
 
         <div className="w-[80%] flex flex-col space-y-16">
-          <div className="relative w-full h-[80vh] aspect-square">
+          <div className="relative w-full lg:h-[80vh] h-[40vh] aspect-square">
             <Image
               src={article.image}
               alt="Article Image"
@@ -71,9 +73,9 @@ export default function Article({ article }) {
           </div>
 
           <div className="w-full flex justify-between">
-            <article className="w-[80%]">
+            <article className="lg:w-[80%] w-full">
               <div
-                className="content"
+                className="content max-w-full lg:text-xl"
                 ref={containerRef}
                 dangerouslySetInnerHTML={{
                   __html: markup,
@@ -98,13 +100,19 @@ export default function Article({ article }) {
 export async function getStaticPaths() {
   // for static paths/URL
 
-  const res = await axios
-    .get("http://localhost:3000/api/articles")
-    .then((res) => res.data);
+  // const res = await axios
+  //   .get("http://localhost:3000/api/articles")
+  //   .then((res) => res.data);
 
-  const paths = res.articles.map((article) => ({
-    params: { category: article.category, articleId: article._id },
-  }));
+  await mongoDBConnect();
+
+  const articles = await Articles.find({});
+
+  const paths = articles.map((article) => {
+    return {
+      params: { category: article.category, articleId: article._id.toString() },
+    };
+  });
 
   return {
     paths,
@@ -115,15 +123,24 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   // get data for specific id
 
-  const res = await axios
-    .get(`http://localhost:3000/api/articles/${params.articleId}`)
-    .then((res) => res.data);
+  // const res = await axios
+  //   .get(`http://localhost:3000/api/articles/${params.articleId}`)
+  //   .then((res) => res.data);
 
-  return {
-    props: {
-      article: res.article,
-    },
-    // revalidate data every 10 seconds
-    revalidate: 10,
-  };
+  await mongoDBConnect();
+
+  try {
+    const article = await Articles.findById(params.articleId);
+
+    if (article)
+      return {
+        props: {
+          article: JSON.parse(JSON.stringify(article)),
+        },
+        // revalidate data every 10 seconds
+        revalidate: 10,
+      };
+  } catch (error) {
+    return res.status(400).json({ message: "Articles failed to fetch" });
+  }
 }

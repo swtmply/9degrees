@@ -22,33 +22,33 @@ export default function NavMenu({ breakpoint }) {
   });
 
   return (
-    <div className="lg:w-full lg:flex hidden justify-center sticky top-4 z-10">
+    <div className="lg:w-[80%] lg:flex hidden justify-center sticky top-4 z-10">
       <div
         className={`transition-colors ${
           navbarState ? "bg-black text-white" : "bg-yellowwallow text-black"
-        } w-[80%] py-4 px-16 flex justify-around rounded-lg hover:bg-black  hover:text-white`}
+        } w-full py-4 px-16 flex justify-around rounded-lg hover:bg-black  hover:text-white`}
       >
         <MenuDropdown
           header="news"
           items={["Nation", "University", "alt0176"]}
-          href="/articles/news"
+          href="/articles/c/news"
         />
         <MenuDropdown
           header="features"
           items={["Profiles", "Opinion", "In Photos"]}
-          href="/articles/features"
+          href="/articles/c/features"
         />
         <MenuDropdown
           header="community"
           items={["Catwalk", "Anonas Street"]}
-          href="/articles/community"
+          href="/articles/c/community"
         />
         <MenuDropdown
           header="Cultures and Lifestyle"
           items={["Life", "Entertainment", "Food and Travel", "New Normal"]}
-          href="/articles/cultures-lifestyle"
+          href="/articles/c/cultures-lifestyle"
         />
-        <Link href="/so-lit">
+        <Link href="/articles/c/so-lit">
           <p className="font-bold hover:text-yellowwallow cursor-pointer">
             SO LIT!
           </p>
@@ -56,7 +56,7 @@ export default function NavMenu({ breakpoint }) {
         <MenuDropdown
           header="9°"
           items={["Cover Story", "We Are 9°"]}
-          href="/articles/nine-degrees"
+          href="/articles/c/nine-degrees"
         />
       </div>
     </div>

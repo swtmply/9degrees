@@ -3,6 +3,7 @@ import { convertFromRaw } from "draft-js";
 import moment from "moment";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 export default function Stack({ article }) {
   const getFirstBlock = (body) => {
@@ -16,8 +17,8 @@ export default function Stack({ article }) {
   );
 
   return (
-    <React.Fragment>
-      <div className="bg-white w-[48%] mb-10">
+    <Link href={`/articles/a/${article._id}`}>
+      <div className="bg-white lg:w-[48%] mb-10 cursor-pointer">
         <div className="relative w-full aspect-square">
           <Image
             src={article.image}
@@ -44,6 +45,6 @@ export default function Stack({ article }) {
           {getFirstBlock(article.body)}
         </div>
       </div>
-    </React.Fragment>
+    </Link>
   );
 }

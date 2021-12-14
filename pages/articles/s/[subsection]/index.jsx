@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import VerticalAd from "@/components/Ads/VerticalAd";
 import Stack from "@/components/Article/Stack";
 import Pagination from "@/components/Article/Pagination";
+import mongoDBConnect from "@/lib/mongoDBConnect";
+import Articles from "@/models/Articles";
 
 export default function Category({ articles }) {
   return (
@@ -28,7 +30,7 @@ export default function Category({ articles }) {
         <NavMenu breakpoint={400} />
 
         <div className="w-[80%] flex justify-between">
-          <div className="w-[80%] flex flex-col space-y-8">
+          <div className="lg:w-[80%] flex flex-col space-y-8">
             <Pagination
               items={articles}
               itemsPerPage={10}
@@ -47,8 +49,16 @@ export default function Category({ articles }) {
 export async function getStaticPaths() {
   // for static paths/URL
 
-  const paths = categoryList.map((category) => ({
-    params: { category: category.value },
+  let subsections = [];
+
+  categoryList.map((category) => {
+    return category?.subsection?.map((subsection) => {
+      return subsections.push(subsection.value);
+    });
+  });
+
+  const paths = subsections.map((subsection) => ({
+    params: { subsection: subsection },
   }));
 
   return {
@@ -59,13 +69,18 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   // get data for specific id
-  const res = await axios
-    .get(`http://localhost:3000/api/articles/?category=${params.category}`)
-    .then((res) => res.data);
+
+  // const res = await axios
+  //   .get(`http://localhost:3000/api/articles/?subsection=${params.subsection}`)
+  //   .then((res) => res.data);
+
+  await mongoDBConnect();
+
+  const articles = await Articles.find({ subsection: params.subsection });
 
   return {
     props: {
-      articles: res.articles,
+      articles: JSON.parse(JSON.stringify(articles.reverse())),
     },
     // revalidate data every 10 seconds
     revalidate: 10,

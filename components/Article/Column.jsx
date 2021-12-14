@@ -23,7 +23,7 @@ export default function ColumnArticle({ article }) {
   };
 
   return (
-    <Link href={`/articles/${categories[0].value}/${article._id}`}>
+    <Link href={`/articles/a/${article._id}`}>
       <div className="flex flex-col items-center justify-center lg:space-x-4 lg:flex-row lg:items-end lg:justify-start">
         <div className="w-[400px] h-[400px] relative cursor-pointer">
           <Image src={article.image} layout="fill" objectFit="cover" />

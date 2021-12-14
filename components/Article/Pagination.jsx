@@ -20,12 +20,14 @@ export default function Pagination({
   };
 
   return (
-    <div className={`${className}`}>
-      {items
-        .slice(pagesVisited, pagesVisited + itemsPerPage)
-        .map((item, idx) => (
-          <Component key={idx} article={item} />
-        ))}
+    <div className="flex flex-col">
+      <div className={`${className}`}>
+        {items
+          .slice(pagesVisited, pagesVisited + itemsPerPage)
+          .map((item, idx) => (
+            <Component key={idx} article={item} />
+          ))}
+      </div>
       <ReactPaginate
         previousLabel={"Previous"}
         nextLabel={"Next"}

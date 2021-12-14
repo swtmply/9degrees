@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
+import { useRouter } from "next/router";
 
-export default function PopupDialog({ isOpen, setIsOpen }) {
+export default function PopupDialog({ isOpen, setIsOpen, userId }) {
+  const router = useRouter();
+
+  const closeDialog = () => {
+    router.push(`/writer/${userId}/profile`);
+  };
   return (
     <Dialog
       className="fixed z-50 inset-0 overflow-y-auto"
       open={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={closeDialog}
     >
       <div className="flex items-center justify-center min-h-screen w-full">
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
@@ -27,7 +33,7 @@ export default function PopupDialog({ isOpen, setIsOpen }) {
           {/* TODO: GO TO PROFILE */}
           <button
             className="px-16 py-2 float-right font-bold uppercase focus:outline-none mt-5 bg-yellowwallow rounded-md"
-            onClick={() => setIsOpen(false)}
+            onClick={closeDialog}
           >
             Okay
           </button>

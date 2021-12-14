@@ -4,7 +4,7 @@ import React from "react";
 
 export default function RowArticle({ article }) {
   return (
-    <Link href={`/articles/${article.category}/${article._id}`}>
+    <Link href={`/articles/a/${article._id}`}>
       <div className="flex flex-col w-full h-[400px] cursor-pointer relative">
         <Image src={article.image} layout="fill" objectFit="cover" />
 
