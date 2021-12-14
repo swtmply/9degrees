@@ -9,6 +9,9 @@ module.exports = {
       fontFamily: {
         mono: ["Roboto Mono", "monospace"],
       },
+      fontFamily: {
+        helvetica: ["Helvetica"]
+      }
     },
 
     colors: {
