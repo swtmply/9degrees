@@ -1,5 +1,29 @@
-import React from "react";
+import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+
+export const getUser = async (id) => {
+  const res = await axios
+    .get(`http://localhost:3000/api/user/${id}`)
+    .then((res) => res.data);
+
+  return res;
+};
 
 export default function UserProfile() {
-  return <div>UserProfile</div>;
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <p>Hello, {session?.user.name}</p>
+      <button
+        className="font-semibold bg-padeepBlue text-white px-4 py-2 rounded-md"
+        onClick={() => router.push(`/writer/${session?.id}/create`)}
+      >
+        Create Article
+      </button>
+      <button onClick={() => signOut()}>Logout</button>
+    </div>
+  );
 }

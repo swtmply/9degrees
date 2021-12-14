@@ -4,14 +4,11 @@ const articleSchema = new Schema(
   {
     title: String,
     body: String,
-    image: {
-      type: String,
-      // don't mind this muna xD
-      default: "/placeholder.jpg",
-    },
+    image: String,
 
     writer: String,
     category: String,
+    subsection: String,
 
     status: {
       type: String,

@@ -13,17 +13,17 @@ export default NextAuth({
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
         // database call
         await mongoDBConnect();
 
-        const username = credentials.username;
+        const email = credentials.email;
         const password = credentials.password;
 
-        const user = await Users.findOne({ username });
+        const user = await Users.findOne({ email });
 
         if (user) {
           if (!user.password) {
@@ -65,11 +65,18 @@ export default NextAuth({
   callbacks: {
     jwt: ({ token, user }) => {
       // TODO: return details of user to token
+      if (user) {
+        token.role = user.role;
+      }
+
       return token;
     },
+
+    // name, email, image, id = mongodb id ng user
     session: ({ session, token }) => {
       if (token) {
         session.id = token.sub;
+        session.user.role = token.role;
       }
 
       return session;

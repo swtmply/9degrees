@@ -2,7 +2,10 @@ import Articles from "@/models/Articles";
 import mongoDBConnect from "@/lib/mongoDBConnect";
 
 export default async function handler(req, res) {
-  const { method } = req;
+  const {
+    method,
+    query: { page, category },
+  } = req;
 
   await mongoDBConnect();
   const data = req.body;
@@ -21,9 +24,36 @@ export default async function handler(req, res) {
 
     case "GET":
       try {
+        if (page) {
+          let query = Articles.find();
+
+          const pageSize = 5;
+          const skip = (page - 1) * pageSize;
+          const total = await Articles.countDocuments();
+
+          const pages = Math.ceil(total / pageSize);
+
+          query = query.skip(skip).limit(pageSize);
+
+          const articles = await query;
+
+          if (articles)
+            return res
+              .status(200)
+              .json({ articles: articles.reverse(), pages, page });
+        }
+
+        if (category) {
+          const articles = await Articles.find({ category });
+
+          if (articles)
+            return res.status(200).json({ articles: articles.reverse() });
+        }
+
         const articles = await Articles.find({});
 
-        if (articles) res.status(200).json({ articles });
+        if (articles)
+          return res.status(200).json({ articles: articles.reverse() });
       } catch (error) {
         return res.status(400).json({ message: "Articles failed to fetch" });
       }
