@@ -29,7 +29,7 @@ const addToDrafts = async (data) => {
   return await axios.post("/api/articles", data);
 };
 
-export default function Create({ user }) {
+export default function Create({ user, userId }) {
   // form state
   const [data, setData] = useState({
     title: "",
@@ -108,12 +108,12 @@ export default function Create({ user }) {
           </div>
 
           <Listbox value={category.value} onChange={setCategory}>
-            <div className="relative">
+            <div className="relative z-50">
               <Listbox.Button className="bg-yellowwallow w-full rounded-md font-bold flex items-center justify-between px-4 py-2">
                 {category.name}
                 <ChevronDownIcon className="w-4 h-4" />
               </Listbox.Button>
-              <Listbox.Options className="absolute w-full bottom-0 mb-12 py-2 bg-yellowwallow rounded-md font-semibold">
+              <Listbox.Options className="absolute z-50 w-full bottom-0 mb-12 py-2 bg-yellowwallow rounded-md font-semibold">
                 {categories.map((cat) => (
                   <Listbox.Option
                     className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
@@ -165,7 +165,7 @@ export default function Create({ user }) {
         </form>
       </div>
       {mutation.isSuccess && (
-        <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+        <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} userId={userId} />
       )}
     </div>
   );
@@ -179,6 +179,6 @@ export async function getServerSideProps(context) {
     .then((res) => res.data);
 
   return {
-    props: { user: res.user },
+    props: { user: res.user, userId: session.id },
   };
 }

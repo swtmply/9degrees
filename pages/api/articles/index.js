@@ -4,7 +4,7 @@ import mongoDBConnect from "@/lib/mongoDBConnect";
 export default async function handler(req, res) {
   const {
     method,
-    query: { page, category },
+    query: { page, category, subsection },
   } = req;
 
   await mongoDBConnect();
@@ -45,6 +45,13 @@ export default async function handler(req, res) {
 
         if (category) {
           const articles = await Articles.find({ category });
+
+          if (articles)
+            return res.status(200).json({ articles: articles.reverse() });
+        }
+
+        if (subsection) {
+          const articles = await Articles.find({ subsection });
 
           if (articles)
             return res.status(200).json({ articles: articles.reverse() });

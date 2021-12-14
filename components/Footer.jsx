@@ -8,7 +8,7 @@ import { XCircleIcon } from "@heroicons/react/solid";
 
 export default function Footer() {
   return (
-    <div className="relative">
+    <div className="relative w-full z-50">
       <div className="absolute top-0 z-40 w-[100%] h-[100%] pointer-events-none">
         <Image
           className="opacity-30"
@@ -18,7 +18,7 @@ export default function Footer() {
         />
       </div>
 
-      <div className="h-[100vh] bg-black mt-10 space-y-8 flex flex-col justify-center items-center text-white relative">
+      <div className="h-[100vh] w-full bg-black mt-10 space-y-8 flex flex-col justify-center items-center text-white relative">
         <div className="flex flex-col">
           <Image src={logo} width="200px" height="300px" />
         </div>
@@ -30,7 +30,7 @@ export default function Footer() {
             <XCircleIcon className="w-16 h-16" />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 lg:flex lg:w-[80%] min-h-max justify-between">
+        <div className="grid grid-cols-3 gap-4 lg:flex lg:w-[80%] min-h-max justify-between">
           <div>
             <p className="uppercase font-bold lg:mb-8 mb-4">news</p>
             <p>Nation</p>

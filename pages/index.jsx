@@ -26,9 +26,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full flex flex-col">
-      <Nav breakpoint={750} />
+      {/* <Nav breakpoint={750} /> */}
+      <div className="bg-redtagging"></div>
+
+      <Nav />
+
       <main className="mt-20 w-full flex flex-col justify-center items-center space-y-10">
-        {/* Hero Image / Cover Story */}
         <div className="md:w-full md:h-[45vw] relative bg-pinkaru ">
           <Image
             src={placeholder}
@@ -37,15 +40,13 @@ export default function Home() {
             objectFit="cover"
           />
         </div>
-        {/* Navbar Menu */}
         <NavMenu breakpoint={750} />
 
-        {/* 4 latest articles component */}
         {isLoading ? <SwipeLoading /> : <Swipe articles={data?.articles} />}
 
         <HorizontalAd />
 
-        <div className="w-[80%] flex justify-center lg:justify-between">
+        <div className="w-[80%] lg:flex-row flex flex-col justify-center lg:justify-between">
           {isLoading ? (
             <ColumnLoading />
           ) : (
@@ -62,6 +63,7 @@ export default function Home() {
 
         <HorizontalAd />
       </main>
+
       <Footer />
     </div>
   );
