@@ -68,20 +68,3 @@ export default function Home() {
     </div>
   );
 }
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (session && session.user.role === "Writer") {
-    return {
-      redirect: {
-        destination: `/writer/${session.id}/profile`,
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session },
-  };
-}
