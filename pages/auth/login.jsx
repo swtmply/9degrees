@@ -1,8 +1,8 @@
 import Input from "@/components/Forms/Input";
-import { getSession, signIn } from "next-auth/react";
+import { getCsrfToken, signIn } from "next-auth/react";
 import React, { useState } from "react";
 
-export default function Login() {
+export default function Login({ csrfToken }) {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -16,8 +16,6 @@ export default function Login() {
       email: credentials.email,
       password: credentials.password,
     });
-
-    window.location.reload(false);
   };
 
   return (
@@ -25,6 +23,7 @@ export default function Login() {
       <div className="bg-white w-[40%] p-2 space-y-2">
         <h1 className="font-bold text-4xl">Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-4">
+          <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
           <Input
             name="email"
             type="text"
@@ -54,18 +53,9 @@ export default function Login() {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (session && session.user.role === "Writer") {
-    return {
-      redirect: {
-        destination: `/writer/${session.id}/profile`,
-        permanent: false,
-      },
-    };
-  }
+  const csrfToken = await getCsrfToken(context);
 
   return {
-    props: {},
+    props: { csrfToken },
   };
 }
