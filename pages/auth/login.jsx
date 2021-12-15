@@ -1,10 +1,8 @@
 import Input from "@/components/Forms/Input";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
+import { getSession, signIn } from "next-auth/react";
 import React, { useState } from "react";
 
 export default function Login() {
-  const router = useRouter();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -13,15 +11,13 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const status = await signIn("credentials", {
+    await signIn("credentials", {
       redirect: false,
       email: credentials.email,
       password: credentials.password,
     });
 
-    if (status.ok) {
-      router.push("/");
-    }
+    window.location.reload(false);
   };
 
   return (
@@ -55,4 +51,21 @@ export default function Login() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (session && session.user.role === "Writer") {
+    return {
+      redirect: {
+        destination: `/writer/${session.id}/profile`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }
