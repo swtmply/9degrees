@@ -148,7 +148,8 @@ export async function getServerSideProps(context) {
   if (session && session.user.role === "Writer") {
     return {
       redirect: {
-        destination: `/writer/${session.id}/profile`,
+        // destination: `/writer/${session.id}/profile`,
+        destination: '/admin/dashboard',
         permanent: false,
       },
     };

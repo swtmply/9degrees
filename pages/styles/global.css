@@ -48,3 +48,8 @@ ins {
   color: #d4d4d8;
   background-color: #f4f4f5;
 }
+
+.stats {
+  font-size: 60px;
+  text-align: center;
+}

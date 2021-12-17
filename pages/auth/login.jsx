@@ -10,9 +10,9 @@ import slogan from "../../public/full-lockup-silhouette.svg"
 import { MailIcon, KeyIcon, ArrowRightIcon } from "@heroicons/react/solid"
 
 export default function Login() {
-  //login box responsive
-  //create loading component
-
+  //responsive
+  //prefetch /admin/dashboard
+  
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false)

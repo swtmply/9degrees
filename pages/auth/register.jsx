@@ -9,6 +9,10 @@ import { useMutation } from "react-query";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
 
+
+// TODO
+// cancel button 
+
 const createUser = async (data) => {
   return await axios.post("/api/auth/signup", data);
 };
@@ -39,36 +43,40 @@ export default function Register() {
   return (
     <div className="flex flex-col min-h-screen justify-center items-center bg-gray-200">
       <div className="bg-white w-[40%] p-2">
-        <h1 className="font-bold text-4xl">Register</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-4">
-          <Input
-            name="username"
-            type="text"
-            label="Username"
-            data={data}
-            setData={setData}
-          />
-          <Input
-            name="name"
-            type="text"
-            label="Name"
-            data={data}
-            setData={setData}
-          />
-          <Input
-            name="email"
-            type="text"
-            label="Email"
-            data={data}
-            setData={setData}
-          />
-          <Input
-            name="password"
-            type="password"
-            label="Password"
-            data={data}
-            setData={setData}
-          />
+        <h1 className="text-2xl">Add New User</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-8">
+          {/* <div className="grid grid-cols-2 gap-5"> */}
+            {/* <div className="flex flex-col items-center space-x-5"> */}
+              <Input
+                name="username"
+                type="text"
+                label="Username"
+                data={data}
+                setData={setData}
+              />
+              <Input
+                name="name"
+                type="text"
+                label="Name"
+                data={data}
+              setData={setData}
+              />
+              <Input
+                name="email"
+                type="text"
+                label="Email"
+                data={data}
+                setData={setData}
+              />
+              <Input
+                name="password"
+                type="password"
+                label="Password"
+                data={data}
+                setData={setData}
+              />
+            {/* </div> */}
+          {/* </div> */}
 
           <Listbox value={role} onChange={setRole}>
             {({ open }) => (
@@ -106,12 +114,18 @@ export default function Register() {
             items={categoryList}
           />
 
-          <div>
+          <div className="space-x-3">
             <button
-              className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-md"
+              className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-full"
               type="submit"
             >
               Register
+            </button>
+            <button
+              className="px-4 py-2 bg-gray-200 text-sm font-semibold rounded-full"
+              type="submit"
+            >
+              Cancel
             </button>
           </div>
         </form>

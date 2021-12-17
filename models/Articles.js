@@ -9,7 +9,9 @@ const articleSchema = new Schema(
     writer: String,
     category: String,
     subsection: String,
-
+    tags: [String],
+    comments: String,
+    
     status: {
       type: String,
       default: "draft",
