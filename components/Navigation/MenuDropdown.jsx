@@ -11,7 +11,7 @@ export default function MenuDropdown({ header, items, href = "/" }) {
   const router = useRouter();
 
   let timeout;
-  const timeoutDuration = 50;
+  const timeoutDuration = 100;
 
   const toggleMenuState = () => setMenuState(!menuState);
 
@@ -26,14 +26,17 @@ export default function MenuDropdown({ header, items, href = "/" }) {
     // if the modal is currently closed, we need to open it
     // OR
     // if the modal is currently open, we need to close it
+
     if (
       (!open && !openState && action === "onMouseEnter") ||
       (open && openState && action === "onMouseLeave")
     ) {
       // clear the old timeout, if any
       clearTimeout(timeout);
+
       // open the modal after a timeout
-      timeout = setTimeout(() => toggleMenu(open), timeoutDuration);
+      toggleMenu(open);
+      // timeout = setTimeout(() => toggleMenu(open), timeoutDuration);
     }
     // else: don't click! 😁
   };
@@ -63,7 +66,7 @@ export default function MenuDropdown({ header, items, href = "/" }) {
             }}
             className={`${
               open || menuState ? "text-yellowwallow" : ""
-            } uppercase tracking-wider outline-none font-bold flex justify-between space-x-2 hover:text-yellowwallow`}
+            } uppercase py-4 tracking-wide outline-none font-black flex justify-between space-x-2 hover:text-yellowwallow`}
           >
             {header}
             {open || menuState ? (
@@ -72,28 +75,31 @@ export default function MenuDropdown({ header, items, href = "/" }) {
               <ChevronDownIcon className="w-6 h-6" />
             )}
           </Menu.Button>
+
           <Menu.Items
             static={menuState}
             onMouseEnter={toggleMenuState}
             onMouseLeave={toggleMenuState}
-            className="absolute outline-none top-12 rounded-md flex flex-col space-y-4 z-10 bg-yellowwallow w-[10vw] px-4 py-8 font-bold text-black"
+            className="absolute outline-none top-12 rounded-md flex flex-col space-y-4 z-10 w-[10vw] py-4 font-bold text-black"
           >
-            {items.map((item, idx) => (
-              <React.Fragment key={idx}>
-                {idx === 0 ? <></> : <hr className="border-2 border-black" />}
-                <Menu.Item>
-                  {({ active }) => (
-                    <Link
-                      href={`/articles/s/${item
-                        .toLowerCase()
-                        .replace(/\s/g, "-")}`}
-                    >
-                      {item}
-                    </Link>
-                  )}
-                </Menu.Item>
-              </React.Fragment>
-            ))}
+            <div className="rounded-md flex flex-col space-y-4 z-10 bg-yellowwallow w-[10vw] px-4 py-8 font-bold text-black">
+              {items.map((item, idx) => (
+                <React.Fragment key={idx}>
+                  {idx === 0 ? <></> : <hr className="border-2 border-black" />}
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        href={`/articles/s/${item
+                          .toLowerCase()
+                          .replace(/\s/g, "-")}`}
+                      >
+                        {item}
+                      </Link>
+                    )}
+                  </Menu.Item>
+                </React.Fragment>
+              ))}
+            </div>
           </Menu.Items>
         </>
       )}

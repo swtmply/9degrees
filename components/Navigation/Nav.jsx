@@ -47,8 +47,8 @@ export default function Nav({ breakpoint }) {
             <Image
               src={iconMark}
               alt="Nine Degree Icon Mark"
-              height="64px"
-              width="64px"
+              height="48px"
+              width="48px"
               className="cursor-pointer"
             />
           ) : (
@@ -65,6 +65,7 @@ export default function Nav({ breakpoint }) {
               alt="Nine Degree Word Mark"
               height="70px"
               width="80px"
+              className="cursor-pointer"
             />
           </Link>
         )}

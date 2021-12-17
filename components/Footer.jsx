@@ -8,17 +8,17 @@ import { XCircleIcon } from "@heroicons/react/solid";
 
 export default function Footer() {
   return (
-    <div className="relative w-full z-50">
+    <div className="relative w-full z-50 mt-16">
       <div className="absolute top-0 z-40 w-[100%] h-[100%] pointer-events-none">
         <Image
-          className="opacity-30"
+          className="opacity-30 z-50"
           src={iconMark}
           layout="fill"
           objectFit="cover"
         />
       </div>
 
-      <div className="h-[100vh] w-full bg-black mt-10 space-y-8 flex flex-col justify-center items-center text-white relative">
+      <div className="h-[85vh] w-full bg-black mt-10 space-y-16 flex flex-col justify-center items-center text-white relative">
         <div className="flex flex-col">
           <Image src={logo} width="200px" height="300px" />
         </div>

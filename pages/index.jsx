@@ -2,7 +2,6 @@ import Footer from "@/components/Footer";
 import Nav from "@/components/Navigation/Nav";
 
 import axios from "axios";
-import { getSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import Image from "next/image";
 
@@ -16,6 +15,7 @@ import HorizontalAd from "@/components/Ads/HorizontalAd";
 import ColumnArticle from "@/components/Article/Column";
 import SwipeLoading from "@/components/SkeletonLoading/SwipeLoading";
 import ColumnLoading from "@/components/SkeletonLoading/ColumnLoading";
+import { getSession } from "next-auth/react";
 
 export const getArticles = () =>
   axios.get(`/api/articles`).then((res) => res.data);
@@ -31,8 +31,8 @@ export default function Home() {
 
       <Nav />
 
-      <main className="mt-20 w-full flex flex-col justify-center items-center space-y-10">
-        <div className="md:w-full md:h-[45vw] relative bg-pinkaru ">
+      <main className="mt-20 w-full flex flex-col justify-center items-center ">
+        <div className="md:w-full md:h-[450px] relative bg-pinkaru ">
           <Image
             src={placeholder}
             alt="Featured article photo"
@@ -40,21 +40,25 @@ export default function Home() {
             objectFit="cover"
           />
         </div>
-        <NavMenu breakpoint={750} />
+        <NavMenu breakpoint={450} />
 
         {isLoading ? <SwipeLoading /> : <Swipe articles={data?.articles} />}
 
         <HorizontalAd />
 
-        <div className="w-[80%] lg:flex-row flex flex-col justify-center lg:justify-between">
+        <h1 className="font-black text-3xl tracking-wide mb-8 mt-16 uppercase w-[1280px] lg:max-w-[1280px]">
+          Latest
+        </h1>
+
+        <div className="w-[80%] lg:max-w-[1280px] space-x-8 lg:flex-row flex flex-col justify-center lg:justify-between">
           {isLoading ? (
             <ColumnLoading />
           ) : (
             <Pagination
               items={data?.articles}
-              itemsPerPage={5}
+              itemsPerPage={10}
               component={ColumnArticle}
-              className="lg:w-[80%] w-full space-y-8 mb-8"
+              className="w-full space-y-8 mb-8"
             />
           )}
 

@@ -4,7 +4,7 @@ export default function ColumnLoading() {
   return (
     <div className="lg:w-[80%] w-full space-y-4 mb-10">
       <div className="lg:flex lg:flex-row flex flex-col items-center lg:items-end lg:space-x-4">
-        <div className="w-[400px] aspect-square bg-gray-300 animate-pulse"></div>
+        <div className="h-[380px] w-[600px] bg-gray-300 animate-pulse"></div>
 
         <div className="lg:w-[60%] w-full lg:justify-start lg:items-start flex flex-col mt-5 space-y-4 justify-center items-center">
           <div className="w-[30%] h-6 bg-gray-400 animate-pulse"></div>
@@ -24,7 +24,7 @@ export default function ColumnLoading() {
         </div>
       </div>
       <div className="hidden lg:flex items-end space-x-4">
-        <div className="w-[400px] aspect-square bg-gray-300 animate-pulse"></div>
+        <div className="h-[380px] w-[600px] bg-gray-300 animate-pulse"></div>
 
         <div className="w-[60%] flex flex-col space-y-4">
           <div className="w-[30%] h-6 bg-gray-400 animate-pulse "></div>
@@ -44,7 +44,7 @@ export default function ColumnLoading() {
         </div>
       </div>
       <div className="hidden lg:flex items-end space-x-4">
-        <div className="w-[400px] aspect-square bg-gray-300 animate-pulse"></div>
+        <div className="h-[380px] w-[600px]  bg-gray-300 animate-pulse"></div>
 
         <div className="w-[60%] flex flex-col space-y-4">
           <div className="w-[30%] h-6 bg-gray-400 animate-pulse "></div>

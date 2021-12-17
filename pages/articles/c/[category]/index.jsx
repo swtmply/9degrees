@@ -18,7 +18,7 @@ export default function Category({ articles }) {
     <div className="min-h-screen w-full flex flex-col space-y-20">
       <Nav breakpoint={400} />
       <main className="space-y-10 grid place-items-center">
-        <div className="relative w-full h-[40vh]">
+        <div className="relative w-full h-[310px]">
           <Image
             src={placeholder}
             alt="hero image"
@@ -29,8 +29,8 @@ export default function Category({ articles }) {
 
         <NavMenu breakpoint={400} />
 
-        <div className="w-[80%] flex justify-between">
-          <div className="lg:w-[80%] flex flex-col space-y-8">
+        <div className="w-[80%] lg:max-w-[1280px] flex justify-between">
+          <div className="lg:w-[90%] flex flex-col space-y-8">
             <Pagination
               items={articles}
               itemsPerPage={10}

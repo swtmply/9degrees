@@ -18,16 +18,17 @@ export default function Stack({ article }) {
 
   return (
     <Link href={`/articles/a/${article._id}`}>
-      <div className="bg-white lg:w-[48%] mb-10 cursor-pointer">
-        <div className="relative w-full aspect-square">
+      <div className="bg-white lg:w-[48%] mb-56 cursor-pointer relative">
+        <div className="relative w-full aspect-[3/2]">
           <Image
             src={article.image}
             alt="Article Image"
             layout="fill"
             objectFit="cover"
+            className="hover:scale-125 transition-all"
           />
         </div>
-        <div className="text-center relative space-y-2 p-4">
+        <div className="text-center w-[90%] bg-white rounded space-y-2 p-4 absolute ml-auto mr-auto left-0 right-0 top-72">
           <p className={`absolute ml-auto mr-auto left-0 right-0 -top-4`}>
             <span
               className={`${categories[0].color} uppercase w-max font-bold text-sm px-4 py-2 text-[#fff] rounded-lg`}

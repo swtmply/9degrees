@@ -21,7 +21,6 @@
 
 article > div > p {
   margin: 2em 0;
-  text-align: justify;
 }
 
 ins {
@@ -35,7 +34,8 @@ ins {
 }
 
 .content > p > span > strong {
-  font-size: 1.5rem;
+  font-size: 1.65rem;
+  font-weight: 800 !important;
 }
 
 /* 
@@ -60,7 +60,7 @@ article > div > p > span {
 } */
 
 .pagination > li > a {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   background-color: #f3f4f6;
 }
@@ -78,4 +78,15 @@ article > div > p > span {
 .pagination > .disabled > a:hover {
   color: #d4d4d8;
   background-color: #f4f4f5;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

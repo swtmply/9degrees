@@ -29,8 +29,8 @@ export default function Category({ articles }) {
 
         <NavMenu breakpoint={400} />
 
-        <div className="w-[80%] flex justify-between">
-          <div className="lg:w-[80%] flex flex-col space-y-8">
+        <div className="w-[80%] lg:max-w-[1280px] flex justify-between">
+          <div className="lg:w-[90%] flex flex-col space-y-8">
             <Pagination
               items={articles}
               itemsPerPage={10}

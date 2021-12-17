@@ -6,7 +6,7 @@ import adPlaceholder from "public/ad-placeholder.png";
 
 export default function VerticalAd() {
   return (
-    <div className="lg:flex flex-col space-y-5 hidden">
+    <div className="lg:flex max-h-[1000px] sticky top-0 flex-col space-y-5 hidden">
       <div className="w-[200px]">
         <p className="uppercase font-semibold">Follow our Socials:</p>
         <div className="flex space-x-4">
@@ -18,7 +18,7 @@ export default function VerticalAd() {
       <div className="w-[200px] h-[400px] relative bg-confusedPurple">
         <Image src={adPlaceholder} layout="fill" objectFit="cover" />
       </div>
-      <div className="w-[200px] h-[700px] relative bg-degreen">
+      <div className="w-[200px] h-[600px] relative bg-degreen">
         <Image src={adPlaceholder} layout="fill" objectFit="cover" />
       </div>
     </div>

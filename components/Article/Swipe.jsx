@@ -16,11 +16,11 @@ export default function Swipe({ articles }) {
   const slidesPerView = () => {
     if (width < 640) return 1;
     if (width < 1024) return 2;
-    if (width > 1000) return 4;
+    if (width > 1000) return 5;
   };
 
   return (
-    <div className="w-[90%] self-center relative">
+    <div className="w-[90%] lg:max-w-[1480px] self-center relative">
       <Swiper
         modules={[Navigation]}
         navigation={{ nextEl: ".prev-button", prevEl: ".next-button" }}
@@ -29,7 +29,7 @@ export default function Swipe({ articles }) {
       >
         {articles.slice(0, 10).map((article) => (
           <SwiperSlide
-            className="lg:max-w-[400px]  max-w-[400px]"
+            className="lg:max-w-[330px] max-w-[400px]"
             key={article._id}
           >
             <RowArticle article={article} />
@@ -37,8 +37,8 @@ export default function Swipe({ articles }) {
         ))}
       </Swiper>
 
-      <ChevronLeftIcon className="absolute lg:top-[160px] sm:top-44 top-40 -left-4 cursor-pointer ring ring-yellowwallow bg-white rounded-full z-[9] next-button w-8 h-8" />
-      <ChevronRightIcon className="absolute lg:top-[160px] sm:top-44 top-40 -right-4 cursor-pointer ring ring-yellowwallow bg-white rounded-full z-[9] prev-button w-8 h-8" />
+      <ChevronLeftIcon className="absolute lg:top-[180px] sm:top-44 top-40 -left-4 cursor-pointer ring ring-yellowwallow bg-white rounded-full z-[9] next-button w-8 h-8" />
+      <ChevronRightIcon className="absolute lg:top-[180px] sm:top-44 top-40 -right-4 cursor-pointer ring ring-yellowwallow bg-white rounded-full z-[9] prev-button w-8 h-8" />
     </div>
   );
 }

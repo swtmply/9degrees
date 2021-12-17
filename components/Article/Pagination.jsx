@@ -20,7 +20,7 @@ export default function Pagination({
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col space-y-12">
       <div className={`${className}`}>
         {items
           .slice(pagesVisited, pagesVisited + itemsPerPage)
