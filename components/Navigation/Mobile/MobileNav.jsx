@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-import iconMark from "public/iconmark-white.svg";
+import iconMark from "public/svgs/iconmark-white.svg";
 import { MenuIcon } from "@heroicons/react/solid";
 import MobileMenu from "./MobileMenu";
 import { useRouter } from "next/router";

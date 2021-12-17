@@ -1,10 +1,9 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { categoryList } from "lib/constants";
 import Nav from "@/components/Navigation/Nav";
 import Image from "next/image";
 
-import placeholder from "public/ad-placeholder.png";
 import NavMenu from "@/components/Navigation/NavMenu";
 import Footer from "@/components/Footer";
 import VerticalAd from "@/components/Ads/VerticalAd";
@@ -13,14 +12,14 @@ import mongoDBConnect from "@/lib/mongoDBConnect";
 import Pagination from "@/components/Article/Pagination";
 import Articles from "@/models/Articles";
 
-export default function Category({ articles }) {
+export default function Category({ articles, category }) {
   return (
     <div className="min-h-screen w-full flex flex-col space-y-20">
       <Nav breakpoint={400} />
       <main className="space-y-10 grid place-items-center">
         <div className="relative w-full h-[310px]">
           <Image
-            src={placeholder}
+            src={`/banners/${category}.png`}
             alt="hero image"
             layout="fill"
             objectFit="cover"
@@ -73,6 +72,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       articles: JSON.parse(JSON.stringify(articles.reverse())),
+      category: params.category,
     },
     // revalidate data every 10 seconds
     revalidate: 10,

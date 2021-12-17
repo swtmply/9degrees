@@ -5,7 +5,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import Image from "next/image";
 
-import placeholder from "../public/PUBMAT SAMPLE.jpg";
+import HeroBG from "public/bg/Hero.png";
 
 import NavMenu from "@/components/Navigation/NavMenu";
 import Swipe from "@/components/Article/Swipe";
@@ -16,6 +16,7 @@ import ColumnArticle from "@/components/Article/Column";
 import SwipeLoading from "@/components/SkeletonLoading/SwipeLoading";
 import ColumnLoading from "@/components/SkeletonLoading/ColumnLoading";
 import { getSession } from "next-auth/react";
+import HeroSwipe from "@/components/HeroSwipe/HeroSwipe";
 
 export const getArticles = () =>
   axios.get(`/api/articles`).then((res) => res.data);
@@ -34,12 +35,14 @@ export default function Home() {
       <main className="mt-20 w-full flex flex-col justify-center items-center ">
         <div className="md:w-full md:h-[450px] relative bg-pinkaru ">
           <Image
-            src={placeholder}
+            src={HeroBG}
             alt="Featured article photo"
             layout="fill"
             objectFit="cover"
           />
+          <HeroSwipe />
         </div>
+
         <NavMenu breakpoint={450} />
 
         {isLoading ? <SwipeLoading /> : <Swipe articles={data?.articles} />}

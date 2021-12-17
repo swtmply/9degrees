@@ -23,7 +23,15 @@ export default function UserProfile() {
       >
         Create Article
       </button>
-      <button onClick={() => signOut()}>Logout</button>
+      <button
+        onClick={async () => {
+          const result = await signOut({ redirect: false, callbackUrl: "/" });
+
+          router.push(result.url);
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 }

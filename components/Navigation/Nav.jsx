@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { HomeIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
-import wordMark from "public/wordmark-white.svg";
-import iconMark from "public/iconmark-white.svg";
+import wordMark from "public/svgs/wordmark-white.svg";
+import iconMark from "public/svgs/iconmark-white.svg";
 
 import Image from "next/image";
 import { SearchIcon, XIcon } from "@heroicons/react/solid";

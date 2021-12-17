@@ -2,7 +2,7 @@ import { XCircleIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import React from "react";
 
-import adPlaceholder from "public/ad-placeholder.png";
+import adPlaceholder from "public/samples/ad-placeholder.png";
 
 export default function VerticalAd() {
   return (
