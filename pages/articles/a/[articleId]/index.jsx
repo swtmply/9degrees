@@ -1,19 +1,15 @@
 import { categoryList } from "@/lib/constants";
 import mongoDBConnect from "@/lib/mongoDBConnect";
-import axios from "axios";
 import draftToHtml from "draftjs-to-html";
 import moment from "moment";
 import Image from "next/image";
 import { useRef } from "react";
 
-import placeholder from "public/ad-placeholder.png";
-import Nav from "@/components/Navigation/Nav";
 import NavMenu from "@/components/Navigation/NavMenu";
-import Footer from "@/components/Footer";
 import VerticalAd from "@/components/Ads/VerticalAd";
 import Articles from "@/models/Articles";
-import RowArticle from "@/components/Article/Row";
 import Swipe from "@/components/Article/Swipe";
+import Layout from "@/components/Layout/Layout";
 
 // Needs Styling
 // final location (pending)
@@ -28,13 +24,13 @@ export default function Article({ article, articles }) {
   );
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
-      <Nav breakpoint={400} />
+    <Layout title={article.title}>
+      <div className="bg-redtagging"></div>
 
       <main className="mt-20 w-full flex flex-col justify-center items-center">
         <div className="relative w-full h-[40vh]">
           <Image
-            src={placeholder}
+            src={`/banners/${article?.category}.png`}
             alt="hero image"
             layout="fill"
             objectFit="cover"
@@ -104,9 +100,7 @@ export default function Article({ article, articles }) {
           <Swipe articles={articles} />
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

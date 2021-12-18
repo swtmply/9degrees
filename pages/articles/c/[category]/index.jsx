@@ -1,23 +1,24 @@
-import axios from "axios";
 import React, { useEffect } from "react";
 import { categoryList } from "lib/constants";
-import Nav from "@/components/Navigation/Nav";
 import Image from "next/image";
 
 import NavMenu from "@/components/Navigation/NavMenu";
-import Footer from "@/components/Footer";
 import VerticalAd from "@/components/Ads/VerticalAd";
 import Stack from "@/components/Article/Stack";
 import mongoDBConnect from "@/lib/mongoDBConnect";
 import Pagination from "@/components/Article/Pagination";
 import Articles from "@/models/Articles";
+import Layout from "@/components/Layout/Layout";
 
 export default function Category({ articles, category }) {
   return (
-    <div className="min-h-screen w-full flex flex-col space-y-20">
-      <Nav breakpoint={400} />
-      <main className="space-y-10 grid place-items-center">
-        <div className="relative w-full h-[310px]">
+    <Layout
+      title={
+        category[0].toUpperCase() + category.substr(1).toLowerCase() + " Page"
+      }
+    >
+      <main className="grid place-items-center">
+        <div className="relative w-full mt-20 h-[310px]">
           <Image
             src={`/banners/${category}.png`}
             alt="hero image"
@@ -28,8 +29,8 @@ export default function Category({ articles, category }) {
 
         <NavMenu breakpoint={400} />
 
-        <div className="w-[80%] lg:max-w-[1280px] flex justify-between">
-          <div className="lg:w-[90%] flex flex-col space-y-8">
+        <div className="w-[80%] lg:max-w-[1280px] mt-24 flex justify-between">
+          <div className="lg:w-[90%] flex flex-col mb-16">
             <Pagination
               items={articles}
               itemsPerPage={10}
@@ -40,8 +41,7 @@ export default function Category({ articles, category }) {
           <VerticalAd />
         </div>
       </main>
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

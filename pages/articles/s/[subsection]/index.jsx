@@ -1,26 +1,28 @@
-import axios from "axios";
 import React from "react";
 import { categoryList } from "lib/constants";
-import Nav from "@/components/Navigation/Nav";
 import Image from "next/image";
 
-import placeholder from "public/ad-placeholder.png";
 import NavMenu from "@/components/Navigation/NavMenu";
-import Footer from "@/components/Footer";
 import VerticalAd from "@/components/Ads/VerticalAd";
 import Stack from "@/components/Article/Stack";
 import Pagination from "@/components/Article/Pagination";
 import mongoDBConnect from "@/lib/mongoDBConnect";
 import Articles from "@/models/Articles";
+import Layout from "@/components/Layout/Layout";
 
-export default function Category({ articles }) {
+export default function Category({ articles, subsection }) {
   return (
-    <div className="min-h-screen w-full flex flex-col space-y-20">
-      <Nav breakpoint={400} />
-      <main className="space-y-10 grid place-items-center">
-        <div className="relative w-full h-[40vh]">
+    <Layout
+      title={
+        subsection[0].toUpperCase() +
+        subsection.substr(1).toLowerCase() +
+        " Page"
+      }
+    >
+      <main className="grid place-items-center">
+        <div className="relative w-full mt-20 h-[40vh]">
           <Image
-            src={placeholder}
+            src={`/banners/${articles[0].category}.png`}
             alt="hero image"
             layout="fill"
             objectFit="cover"
@@ -29,8 +31,8 @@ export default function Category({ articles }) {
 
         <NavMenu breakpoint={400} />
 
-        <div className="w-[80%] lg:max-w-[1280px] flex justify-between">
-          <div className="lg:w-[90%] flex flex-col space-y-8">
+        <div className="w-[80%] lg:max-w-[1280px] mt-24 flex justify-between">
+          <div className="lg:w-[90%] flex flex-col mb-16">
             <Pagination
               items={articles}
               itemsPerPage={10}
@@ -41,8 +43,7 @@ export default function Category({ articles }) {
           <VerticalAd />
         </div>
       </main>
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 
@@ -81,6 +82,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       articles: JSON.parse(JSON.stringify(articles.reverse())),
+      subsection: params.subsection,
     },
     // revalidate data every 10 seconds
     revalidate: 10,

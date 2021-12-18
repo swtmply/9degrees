@@ -17,6 +17,7 @@ import SwipeLoading from "@/components/SkeletonLoading/SwipeLoading";
 import ColumnLoading from "@/components/SkeletonLoading/ColumnLoading";
 import { getSession } from "next-auth/react";
 import HeroSwipe from "@/components/HeroSwipe/HeroSwipe";
+import Layout from "@/components/Layout/Layout";
 
 export const getArticles = () =>
   axios.get(`/api/articles`).then((res) => res.data);
@@ -26,12 +27,7 @@ export default function Home() {
   const { data, isLoading } = useQuery(["articles"], getArticles);
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
-      {/* <Nav breakpoint={750} /> */}
-      <div className="bg-redtagging"></div>
-
-      <Nav />
-
+    <Layout title="Home Page">
       <main className="mt-20 w-full flex flex-col justify-center items-center ">
         <div className="md:w-full md:h-[450px] relative bg-pinkaru ">
           <Image
@@ -70,9 +66,7 @@ export default function Home() {
 
         <HorizontalAd />
       </main>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }
 

@@ -21,7 +21,7 @@ export default function Pagination({
 
   return (
     <div className="flex flex-col space-y-12">
-      <div className={`${className}`}>
+      <div className={`${className} mb-16`}>
         {items
           .slice(pagesVisited, pagesVisited + itemsPerPage)
           .map((item, idx) => (
