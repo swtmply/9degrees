@@ -5,7 +5,7 @@ import moment from "moment";
 import Image from "next/image";
 import React from "react";
 
-import placeholder from "public/ad-placeholder.png";
+import placeholder from "public/samples/ad-placeholder.png";
 import NineDegreesArticle from "@/components/NineDegreesArticle/NineDegreesArticle";
 
 export default function NineDegrees() {

@@ -108,3 +108,33 @@ article > div > p > span {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.rdw-option-wrapper {
+  height: 35px !important;
+  width: 35px !important;
+}
+
+.rdw-option-wrapper > img {
+  height: 15px !important;
+  width: 15px !important;
+}
+
+.rti--container {
+  background: #fff;
+  border: 2px solid black !important;
+  flex-wrap: nowrap !important;
+  width: 60% !important;
+}
+
+.rti--tag {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  font-weight: 600;
+  background: #fae62f !important;
+  padding: 0.2em 0.5em;
+}
+
+.rti--input:focus {
+  outline: none !important;
+  border: none !important;
+}
