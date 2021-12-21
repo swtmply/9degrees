@@ -11,7 +11,10 @@ const articleSchema = new Schema(
     subsection: String,
     tags: [String],
     comments: String,
-    
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       default: "draft",

@@ -149,7 +149,7 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         // destination: `/writer/${session.id}/profile`,
-        destination: '/admin/dashboard',
+        destination: '/admin/',
         permanent: false,
       },
     };

@@ -13,12 +13,10 @@ import Table from "@/components/Table";
 export default function index() {
   const { data: session } = useSession();
   const router = useRouter();
-  
-  const forDrafts = true;
+  const forTrash = true;
 
   const getMine = () => axios.get("/api/articles/mine").then((res) => res.data);
   const { data: mineArticles, isLoading } = useQuery(["my-articles"], getMine);
-  console.log(mineArticles)
 
   return (
     <div className="relative min-h-screen max-h-screen flex">
@@ -58,7 +56,7 @@ export default function index() {
               <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <div>
-                    <Table data={mineArticles} session={session} forDrafts={forDrafts} />
+                    <Table data={mineArticles} session={session} forTrash={forTrash} />
                     {/* pagination */}
                   </div>
                 </div>

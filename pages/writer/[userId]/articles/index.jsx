@@ -14,7 +14,11 @@ export default function index() {
   const { data: session } = useSession();
   const router = useRouter();
   
-  const forDrafts = true;
+  const forPublished = true;
+//   const forPublished = false;
+  let mineForApproval = 0;
+  let mineApproved = 0;
+  let minePublished = 0;
 
   const getMine = () => axios.get("/api/articles/mine").then((res) => res.data);
   const { data: mineArticles, isLoading } = useQuery(["my-articles"], getMine);
@@ -45,6 +49,34 @@ export default function index() {
             :
             (<>
               <div className="grid grid-cols-5 gap-6">
+                {mineArticles?.articles.map((article) => {
+                    if (!article.isDeleted) {
+                      if (article.status === "forApproval") mineForApproval++;
+                      if (article.status === "approved") mineApproved++;
+                      if (article.status === "published") minePublished++;
+                    }
+                })}
+    
+                {/* stats */}
+                <div className="font-helvetica col-span-2">
+                  <div className="flex mt-4 pl-3">
+                    <div className="pr-10">
+                      <h1>
+                        <b>Pending:</b> {mineForApproval}
+                      </h1>
+                    </div>
+                    <div className="pr-10">
+                      <h1>
+                        <b>Approved:</b> {mineApproved}
+                    </h1> 
+                    </div>
+                    <div className="pr-10">
+                      <h1>
+                        <b>Published:</b> {minePublished}
+                      </h1>
+                    </div>
+                  </div>
+                </div>
     
                 {/* filter */}
                 <div className="w-full col-start-5">
@@ -58,7 +90,7 @@ export default function index() {
               <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <div>
-                    <Table data={mineArticles} session={session} forDrafts={forDrafts} />
+                    <Table data={mineArticles} forPublished={forPublished} />
                     {/* pagination */}
                   </div>
                 </div>
@@ -85,10 +117,8 @@ export async function getServerSideProps(context) {
     };
   }
   
-
   return {
     props: {},
   };
 }
-
 

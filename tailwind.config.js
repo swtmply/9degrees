@@ -10,8 +10,8 @@ module.exports = {
         mono: ["Roboto Mono", "monospace"],
       },
       fontFamily: {
-        helvetica: ["Helvetica"]
-      } 
+        helvetica: ["Helvetica"],
+      },
     },
 
     colors: {
@@ -44,6 +44,9 @@ module.exports = {
       },
       padeepBlue: {
         DEFAULT: "#4100FA",
+      },
+      orange: {
+        DEFAULT: "#F78300",
       },
     },
   },

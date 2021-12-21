@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import { convertToRaw, EditorState } from "draft-js";
 import { useMutation } from "react-query";
@@ -11,10 +12,14 @@ import ImageUpload from "@/components/ImageUpload";
 import imageUpload from "@/lib/imageUpload";
 import Input from "@/components/Input";
 import { Listbox, RadioGroup } from "@headlessui/react";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { categoryList } from "@/lib/constants";
 import { CheckIcon } from "@heroicons/react/outline";
 import PopupDialog from "@/components/PopupDialog";
+import Loading from "@/components/LoadingBox";
+import Logo from "@/components/Logo";
+import Sidebar from "@/components/SidebarMenu";
+import Header from "@/components/HeaderAdmin";
 
 // dynamic import para dun sa word like textarea
 const Editor = dynamic(
@@ -30,6 +35,9 @@ const addToDrafts = async (data) => {
 };
 
 export default function Create({ user }) {
+  const {data: session } = useSession()
+  const router = useRouter()
+
   // form state
   const [data, setData] = useState({
     title: "",
@@ -86,91 +94,127 @@ export default function Create({ user }) {
   };
 
   return (
-    <div className="flex min-h-screen justify-center bg-gray-200">
-      <div className="flex flex-col bg-white shadow-lg">
-        {/* Image Upload component */}
-        <ImageUpload setImage={setImage} />
-
-        {/* if mutation is success or failed */}
-        {mutation.isSuccess && <p>Success</p>}
-        {mutation.isError && <p>{mutation.error.data}</p>}
-
-        {/* form for article */}
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-4">
-          <Input
-            name="title"
-            type="text"
-            label="Title"
-            data={data}
-            setData={setData}
-          />
-          <div className="flex flex-col space-y-2">
-            <label className="font-bold text-2xl tracking-wide">Body:</label>
-            <Editor
-              editorState={editorState}
-              onEditorStateChange={onEditorStateChange}
-              toolbarClassName="flex sticky top-0 z-40 !justify-center mx-auto"
-              editorClassName="mt-2 px-4 bg-[#fff] shadow-lg min-h-screen"
-            />
+    <div className="relative min-h-screen max-h-screen flex">
+      <div className="bg-padeepBlue w-64 grid grid-rows-3">
+        <div className="pt-6">
+          <Logo />
+        </div>
+        <div className="row-span-2">
+          <div className="flex justify-center pt-14">
+            <Sidebar />
           </div>
-
-          <Listbox value={category.value} onChange={setCategory}>
-            <div className="relative">
-              <Listbox.Button className="bg-yellowwallow w-full rounded-md font-bold flex justify-between px-4 py-2">
-                {category.name}
-              </Listbox.Button>
-              <Listbox.Options className="absolute w-full mb-2 py-2 bg-yellowwallow rounded-md font-semibold">
-                {categories.map((cat) => (
-                  <Listbox.Option
-                    className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
-                    key={cat.value}
-                    value={cat}
-                  >
-                    {cat.name}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
-            </div>
-          </Listbox>
-
-          <RadioGroup
-            value={selectedSubsection}
-            onChange={setselectedSubsection}
-          >
-            <div className="space-y-2">
-              {category.subsection &&
-                category?.subsection.map((sub) => (
-                  <RadioGroup.Option key={sub.value} value={sub.value}>
-                    {({ checked }) => (
-                      <div className="flex items-center space-x-4">
-                        <div
-                          className={`${
-                            checked
-                              ? "bg-yellowwallow ring-yellowwallow"
-                              : "ring-black"
-                          } ring rounded-full w-4 h-4`}
-                        >
-                          {checked && <CheckIcon className="w-4 h-4" />}
-                        </div>
-                        <span className="font-semibold">{sub.name}</span>
-                      </div>
-                    )}
-                  </RadioGroup.Option>
-                ))}
-            </div>
-          </RadioGroup>
-
-          <div>
-            <button
-              className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-md"
-              type="submit"
+        </div>
+      </div>
+      {/* Main */}
+      <div className="bg-padeepBlue flex-1 p-3">
+        {/* white container */}
+        <div className="flex flex-col rounded-l-lg bg-[#e6e6e6] h-full p-6">
+          <div className="pb-4">
+            <button 
+              className="bg-[#f2f2f2] px-5 py-2 rounded-xl hover:bg-[#D9D9D9] transition duration-700 ease-in-out"
+              onClick={() => router.back()}
             >
-              Submit to drafts
+              Back
             </button>
           </div>
-        </form>
+          
+          <div className="flex-container">
+            <div className="w-3/4 max-h-full overflow-y-auto justify-center bg-[#f2f2f2] rounded-xl shadow-lg">
+              <div className="rounded-xl m-2">
+                  {/* if mutation is success or failed */}
+                  {mutation.isSuccess && <p>Success</p>}
+                  {mutation.isError && <p>{mutation.error.data}</p>}
+          
+                  {/* form for article */}
+                  <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-4">
+                    <div className="bg-white">
+                      <Input
+                      name="title"
+                      type="text"
+                      label="Title"
+                      data={data}
+                      setData={setData}
+                      />
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                      <label className="font-bold text-lg pl-2">Text</label>
+                      <Editor
+                        editorState={editorState}
+                        onEditorStateChange={onEditorStateChange}
+                        toolbarClassName="flex sticky top-0 z-40 !justify-center mx-auto"
+                        editorClassName="mt-2 px-4 bg-[#fff] shadow-lg min-h-screen"
+                      />
+                    </div>
+
+                    {/* Image Upload component */}
+                    <div className="bg-white rounded-md shadow-xl">
+                      <ImageUpload setImage={setImage} />
+                    </div>
+                    
+                    <Listbox value={category.value} onChange={setCategory}>
+                      <div className="relative">
+                        <Listbox.Button className="bg-yellowwallow w-full rounded-md font-bold flex justify-between px-4 py-2">
+                          {category.name}
+                        </Listbox.Button>
+                        <Listbox.Options className="absolute w-full mb-2 py-2 bg-yellowwallow rounded-md font-semibold">
+                          {categories.map((cat) => (
+                            <Listbox.Option
+                              className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
+                              key={cat.value}
+                              value={cat}
+                            >
+                              {cat.name}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
+                      </div>
+                    </Listbox>
+          
+                    <RadioGroup
+                      value={selectedSubsection}
+                      onChange={setselectedSubsection}
+                    >
+                      <div className="space-y-2">
+                        {category.subsection &&
+                          category?.subsection.map((sub) => (
+                            <RadioGroup.Option key={sub.value} value={sub.value}>
+                              {({ checked }) => (
+                                <div className="flex items-center space-x-4">
+                                  <div
+                                    className={`${
+                                      checked
+                                        ? "bg-yellowwallow ring-yellowwallow"
+                                        : "ring-black"
+                                    } ring rounded-full w-4 h-4`}
+                                  >
+                                    {checked && <CheckIcon className="w-4 h-4" />}
+                                  </div>
+                                  <span className="font-semibold">{sub.name}</span>
+                                </div>
+                              )}
+                            </RadioGroup.Option>
+                          ))}
+                      </div>
+                    </RadioGroup>
+          
+                    <div>
+                      <button
+                        className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-md"
+                        type="submit"
+                      >
+                        Submit to drafts
+                      </button>
+                    </div>
+                  </form>
+              </div>
+              <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+            </div>
+          
+            <div className="w-1/4 bg-[#f2f2f2] ml-4 rounded-md">
+            </div>
+          </div>
+        </div>
       </div>
-      <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 }
@@ -181,7 +225,7 @@ export async function getServerSideProps(context) {
   const res = await axios
     .get(`http://localhost:3000/api/user/${session.id}`)
     .then((res) => res.data);
-
+  
   return {
     props: { user: res.user },
   };

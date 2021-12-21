@@ -34,7 +34,7 @@ export default function Login() {
 
     setIsLoading(false);
     if (status.ok) {
-      router.push("/admin/dashboard");
+      router.push("/admin/");
     } 
     if (status.error) {
       setError(status.error)
@@ -126,7 +126,7 @@ export async function getServerSideProps(context) {
   if (session) {
     return {
       redirect: {
-        destination: '/admin/dashboard',
+        destination: '/admin/',
         permanent: false
       }
     }
