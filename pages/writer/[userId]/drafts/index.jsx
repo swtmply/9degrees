@@ -14,8 +14,6 @@ export default function index() {
   const { data: session } = useSession();
   const router = useRouter();
   
-  const forDrafts = true;
-
   const getMine = () => axios.get("/api/articles/mine").then((res) => res.data);
   const { data: mineArticles, isLoading } = useQuery(["my-articles"], getMine);
   console.log(mineArticles)
@@ -48,7 +46,10 @@ export default function index() {
     
                 {/* filter */}
                 <div className="w-full col-start-5">
-                  <button className="w-full bg-redtagging text-white py-2 px-5 rounded-xl hover:opacity-75 transition duration-700 ease-in-out">
+                  <button 
+                    className="w-full bg-redtagging text-white py-2 px-5 rounded-xl hover:opacity-75 transition duration-700 ease-in-out"
+                    onClick={() => router.push(`/writer/${session?.id}/create`)}
+                  >
                     <div>create article +</div>
                   </button>
                 </div>
@@ -58,7 +59,7 @@ export default function index() {
               <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <div>
-                    <Table data={mineArticles} session={session} forDrafts={forDrafts} />
+                    <Table mine={mineArticles} session={session} />
                     {/* pagination */}
                   </div>
                 </div>

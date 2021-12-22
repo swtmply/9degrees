@@ -14,8 +14,6 @@ export default function index() {
   const { data: session } = useSession();
   const router = useRouter();
   
-  const forPublished = true;
-//   const forPublished = false;
   let mineForApproval = 0;
   let mineApproved = 0;
   let minePublished = 0;
@@ -90,7 +88,7 @@ export default function index() {
               <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <div>
-                    <Table data={mineArticles} forPublished={forPublished} />
+                    <Table mine={mineArticles} session={session} />
                     {/* pagination */}
                   </div>
                 </div>

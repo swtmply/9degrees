@@ -4,21 +4,12 @@ import { useQuery } from "react-query";
 import { getSession, useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
+import Statistics from "@/components/DashboardStats";
 import Loading from "@/components/LoadingBox";
 import Logo from "@/components/Logo";
 import Sidebar from "@/components/SidebarMenu";
 import Header from "@/components/HeaderAdmin";
 import Table from "@/components/Table";
-
-import {
-  ClipboardListIcon,
-  ClipboardCheckIcon,
-  DotsCircleHorizontalIcon,
-  PencilAltIcon,
-  UserCircleIcon,
-  TrashIcon,
-  PlusSmIcon,
-} from "@heroicons/react/solid";
 
 //TO DO
 //custom scrollbar
@@ -30,20 +21,10 @@ export default function Dashboard() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  let mineDraft = 0; //Yellow
-  let mineForApproval = 0; //Red
-  let mineApproved = 0; //Green
-  let minePublished = 0;
-  let mineDeleted = 0;
-  let draft = 0;
-  let forApproval = 0;
-  let approved = 0;
-  let published = 0;
-
-  const getArticles = () => axios.get("/api/articles").then((res) => res.data);
+  const getArticles = async () => await axios.get("/api/articles").then((res) => res.data);
   const { data, isLoading } = useQuery(["articles"], getArticles);
   
-  const getMine = () => axios.get("/api/articles/mine").then((res) => res.data);
+  const getMine = async () => await axios.get("/api/articles/mine").then((res) => res.data);
   const { data: allMine, isLoading: loadingMine } = useQuery(["mine-articles"], getMine);
 
   return (
@@ -71,95 +52,14 @@ export default function Dashboard() {
             :
             (<>
               <div className="grid grid-cols-8 gap-6">
-                
-                {data?.articles.map((article) => {
-                  if (article.writer == session?.user.name) {
-                    if (article.status === "draft") {mineDraft++;}
-                    if (article.status === "forApproval") {mineForApproval++}
-                    if (article.status === "approved") {mineApproved++}
-                    if (article.status === "published") {minePublished++}
-                    if (article.status === "deleted") {mineDeleted++}
-                  }
-                })}
-    
-                {data?.articles.map((article) => {
-                  if (article.status === "draft") draft++
-                  if (article.status === "forApproval") forApproval++
-                  if (article.status === "approved") approved++
-                  if (article.status === "published") published++
-                })}
-    
                 {/* stats */}
                 <div className="font-helvetica bg-[#ffffff] col-span-6 rounded-2xl">
                   <div className="p-3">
-                    <div className="flex items-center grid grid-cols-6">
-                      <div>
-                        <div className="stats font-mono">
-                          {data?.articles ? data?.articles.length : 0}
-                        </div>
-                        <div className="flex items-center justify-center bg-yellowwallow space-x-2 py-2 px-5 rounded-l-xl">
-                          <ClipboardListIcon className="pointer-events-none w-4 h-4" />
-                          <div className="font-bold">All</div>
-                        </div>
-                      </div>
-    
-                      <div>
-                        <div className="stats font-mono">
-                          {published ? published : 0}
-                        </div>
-                        <div className="flex items-center justify-center bg-yellowwallow space-x-2 py-2 px-5 ">
-                          <ClipboardCheckIcon className="pointer-events-none w-4 h-4" />
-                          <div className="font-bold">Published</div>
-                        </div>
-                      </div>
-    
-                      <div>
-                        <div className="stats font-mono">
-                          {approved ? approved : 0}
-                        </div>
-                        <div className="flex items-center justify-center bg-yellowwallow space-x-2 py-2 px-5 ">
-                          <TrashIcon className="pointer-events-none w-4 h-4" />
-                          <div className="font-bold">Approved</div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="stats font-mono">
-                          {forApproval ? forApproval : 0}
-                        </div>
-                        <div className="flex items-center justify-center bg-yellowwallow space-x-2 py-2 px-5 ">
-                          <DotsCircleHorizontalIcon className="pointer-events-none w-4 h-4" />
-                          <div className="font-bold">Pending</div>
-                        </div>
-                      </div>
-    
-                      <div>
-                        <div className="stats font-mono">
-                          {draft ? draft : 0}
-                        </div>
-                        <div className="flex items-center justify-center bg-yellowwallow space-x-2 py-2 px-5 ">
-                          <PencilAltIcon className="pointer-events-none w-4 h-4" />
-                          <div className="font-bold">Drafts</div>
-                        </div>
-                      </div>
-    
-                      <div>
-                        <div className="stats font-mono">
-                          {allMine ? allMine?.articles.length : 0}
-                          {console.log("all mine", allMine)}
-                        </div>
-                        <div className="flex items-center justify-center bg-yellowwallow space-x-2 py-2 px-5 rounded-r-xl">
-                          <UserCircleIcon className="pointer-events-none w-4 h-4" />
-                          <div className="font-bold">Mine</div>
-                        </div>
-                      </div>
-    
-                      
-                    </div>
+                    <Statistics all={data} mine={allMine} session={session} />
                   </div>
                 </div>
     
-                {/* create component */}
+                {/* create */}
                 <div className="w-full bg-[#ffffff] col-span-2 rounded-2xl">
                   <div className="p-3 space-y-2">
                     <div className="text-right font-bold">
@@ -190,7 +90,7 @@ export default function Dashboard() {
               <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <div>
-                    <Table data={data}/>
+                    <Table all={data} mine={allMine} session={session} />
                   </div>
                 </div>
               </div>

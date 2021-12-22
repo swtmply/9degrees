@@ -45,6 +45,7 @@ export default function Create({ user }) {
     body: "",
     writer: user?.name,
     category: "",
+    // tags: "",
   });
   // textarea editor state
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -118,7 +119,7 @@ export default function Create({ user }) {
             </button>
           </div>
           
-          <div className="flex-container">
+          <form onSubmit={handleSubmit} className="flex-container">
             <div className="w-3/4 max-h-full overflow-y-auto justify-center bg-[#f2f2f2] rounded-xl shadow-lg">
               <div className="rounded-xl m-2">
                   {/* if mutation is success or failed */}
@@ -126,14 +127,14 @@ export default function Create({ user }) {
                   {mutation.isError && <p>{mutation.error.data}</p>}
           
                   {/* form for article */}
-                  <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-4">
-                    <div className="bg-white">
+                  <div className="flex flex-col space-y-4 p-4">
+                    <div className="bg-white p-2 rounded-md">
                       <Input
-                      name="title"
-                      type="text"
-                      label="Title"
-                      data={data}
-                      setData={setData}
+                        name="title"
+                        type="text"
+                        label="Title"
+                        data={data}
+                        setData={setData}
                       />
                     </div>
                     <div className="flex flex-col space-y-2">
@@ -150,69 +151,84 @@ export default function Create({ user }) {
                     <div className="bg-white rounded-md shadow-xl">
                       <ImageUpload setImage={setImage} />
                     </div>
-                    
-                    <Listbox value={category.value} onChange={setCategory}>
-                      <div className="relative">
-                        <Listbox.Button className="bg-yellowwallow w-full rounded-md font-bold flex justify-between px-4 py-2">
-                          {category.name}
-                        </Listbox.Button>
-                        <Listbox.Options className="absolute w-full mb-2 py-2 bg-yellowwallow rounded-md font-semibold">
-                          {categories.map((cat) => (
-                            <Listbox.Option
-                              className="hover:bg-white hover:bg-opacity-75 px-4 py-3 cursor-pointer"
-                              key={cat.value}
-                              value={cat}
-                            >
-                              {cat.name}
-                            </Listbox.Option>
-                          ))}
-                        </Listbox.Options>
-                      </div>
-                    </Listbox>
-          
-                    <RadioGroup
-                      value={selectedSubsection}
-                      onChange={setselectedSubsection}
-                    >
-                      <div className="space-y-2">
-                        {category.subsection &&
-                          category?.subsection.map((sub) => (
-                            <RadioGroup.Option key={sub.value} value={sub.value}>
-                              {({ checked }) => (
-                                <div className="flex items-center space-x-4">
-                                  <div
-                                    className={`${
-                                      checked
-                                        ? "bg-yellowwallow ring-yellowwallow"
-                                        : "ring-black"
-                                    } ring rounded-full w-4 h-4`}
-                                  >
-                                    {checked && <CheckIcon className="w-4 h-4" />}
-                                  </div>
-                                  <span className="font-semibold">{sub.name}</span>
-                                </div>
-                              )}
-                            </RadioGroup.Option>
-                          ))}
-                      </div>
-                    </RadioGroup>
-          
-                    <div>
-                      <button
-                        className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-md"
-                        type="submit"
-                      >
-                        Submit to drafts
-                      </button>
-                    </div>
-                  </form>
+                  </div>
               </div>
               <PopupDialog isOpen={isOpen} setIsOpen={setIsOpen} />
             </div>
           
-            <div className="w-1/4 bg-[#f2f2f2] ml-4 rounded-md">
+            <div className="w-1/4 pl-8 pr-3 rounded-md">
+              <div className="flex flex-col">
+                <label htmlFor="writer">Author</label>
+                <input
+                  name="writer"
+                  type="text"
+                  label="Author"
+                  value={data.writer}
+                  className="rounded-md border-b border-gray-300 focus:outline-none focus:border-none"
+                />
+              </div>
+
+              <div className="mt-5">
+                <div>Category</div>
+                <Listbox value={category.value} onChange={setCategory}>
+                  <div className="relative">
+                    <Listbox.Button className="bg-white w-full rounded-md font-bold flex justify-between px-4 py-2">
+                      {category.name}
+                    </Listbox.Button>
+                    <Listbox.Options className="absolute w-full mb-2 py-2 bg-white rounded-md font-semibold">
+                      {categories.map((cat) => (
+                        <Listbox.Option
+                          className="hover:bg-yellowwallow hover:bg-opacity-75 px-4 py-2 cursor-pointer"
+                          key={cat.value}
+                          value={cat}
+                          >
+                          {cat.name}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </div>
+                </Listbox>
+              </div>
+    
+              <div className="m-3">
+                <RadioGroup
+                  value={selectedSubsection}
+                  onChange={setselectedSubsection}
+                >
+                  <div className="space-y-2">
+                    {category.subsection &&
+                      category?.subsection.map((sub) => (
+                        <RadioGroup.Option key={sub.value} value={sub.value}>
+                          {({ checked }) => (
+                            <div className="flex items-center space-x-4">
+                              <div
+                                className={`${
+                                  checked
+                                    ? "bg-yellowwallow ring-yellowwallow"
+                                    : "ring-black"
+                                } ring rounded-full w-4 h-4`}
+                                >
+                                {checked && <CheckIcon className="w-4 h-4" />}
+                              </div>
+                              <span className="font-semibold">{sub.name}</span>
+                            </div>
+                          )}
+                        </RadioGroup.Option>
+                      ))}
+                  </div>
+                </RadioGroup>
+              </div>
+    
+              <div>
+                <button
+                  className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-lg hover:bg-opacity-75"
+                  type="submit"
+                  >
+                  Submit to drafts
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
