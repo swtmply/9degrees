@@ -4,7 +4,6 @@ import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 export default function SidebarMenu() {
-
   const { data: session } = useSession()
   const router = useRouter()
 

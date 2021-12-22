@@ -3,14 +3,11 @@ import React from "react";
 
 export default function Table({ all, mine, session }) {
 
-  console.log("all", all)
-  console.log("mine", mine)
-
   const homePage = () => {
     let check = false;
     if(document.location.pathname.includes('admin')) {
       check = true;
-      console.log("home page", check)
+      // console.log("home page", check)
     }
     return check;
   }
@@ -19,7 +16,7 @@ export default function Table({ all, mine, session }) {
     let check = false;
     if(document.location.pathname.includes('articles')) {
       check = true;
-      console.log("articles page", check)
+      // console.log("articles page", check)
     }
     return check;
   }
@@ -28,7 +25,7 @@ export default function Table({ all, mine, session }) {
     let check = false;
     if(document.location.pathname.includes('drafts')) {
       check = true;
-      console.log("drafts page", check)
+      // console.log("drafts page", check)
     }
     return check;
   }
@@ -37,7 +34,7 @@ export default function Table({ all, mine, session }) {
     let check = false;
     if(document.location.pathname.includes('trash')){
       check = true;
-      console.log("trash page", check, document.location.pathname)
+      // console.log("trash page", check, document.location.pathname)
     }
     return check;
   }
@@ -86,17 +83,16 @@ export default function Table({ all, mine, session }) {
   }
 
   return (
-    <div>
-      <table className="table table-fixed border-separate space-y-6 text-sm">
+      <table className="table table-fixed w-full border-separate space-y-6 text-sm">
         <thead className="bg-white text-left sticky top-0">
           <tr className="font-bold">
-            <th className="p-3">Title</th>
-            <th className="p-3">Author</th>
-            <th className="p-3">Categories</th>
-            <th className="p-3">Tags</th>
-            <th className="p-3">Comments</th>
-            <th className="p-3">Date</th>
-            <th className="p-3">Status</th>
+            <th className="p-3 w-[20%]">Title</th>
+            <th className="p-3 w-[15%]">Author</th>
+            <th className="p-3 w-[10%]">Categories</th>
+            <th className="p-3 w-[15%]">Tags</th>
+            <th className="p-3 w-[15%]">Comments</th>
+            <th className="p-3 w-[15%]">Date</th>
+            <th className="p-3 w-[10%]">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -109,7 +105,10 @@ export default function Table({ all, mine, session }) {
               <td className="px-4 pt-1 pb-4">
                 {article.comments ? article.comments : <div className="text-center">-</div>}
               </td>
-              <td className="px-4 pt-1 pb-4">{article.updatedAt}</td>
+              <td className="px-4 pt-1 pb-4">
+                Last modified
+                <div className="inline-block">at {article.updatedAt}</div>
+              </td>
               <td className="px-4 pt-1 pb-4">
                 {article.status == "draft" ? ( 
                   <div className="flex items-center space-x-2"> 
@@ -137,6 +136,5 @@ export default function Table({ all, mine, session }) {
           })}
         </tbody>
       </table>
-    </div>
   )
 }

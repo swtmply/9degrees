@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { getSession, useSession, signOut } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import Statistics from "@/components/DashboardStats";

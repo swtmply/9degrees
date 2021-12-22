@@ -80,7 +80,7 @@ export default function HeaderAdmin({ session }) {
                           className={`${
                             active ? 'bg-yellowwallow' : 'bg-white'
                           } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                          href="/admin/" 
+                          href={`/admin/${session.user.categories}/manage-team/`} 
                           >
                             Manage my team
                           </a>

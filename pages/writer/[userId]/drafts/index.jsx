@@ -56,7 +56,7 @@ export default function index() {
               </div>
     
               {/* table */}
-              <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
+              <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-4 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <div>
                     <Table mine={mineArticles} session={session} />
