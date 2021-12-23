@@ -6,6 +6,8 @@ const userSchema = new Schema(
     email: String,
     password: String,
     role: String,
+    bio: { type: String, default: "" },
+    image: { type: String, default: "" },
 
     categories: [String],
 

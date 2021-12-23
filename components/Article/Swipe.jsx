@@ -15,8 +15,9 @@ export default function Swipe({ articles }) {
 
   const slidesPerView = () => {
     if (width < 640) return 1;
-    if (width < 1024) return 2;
-    if (width > 1000) return 5;
+    if (width < 1000) return 2;
+
+    return 5;
   };
 
   return (

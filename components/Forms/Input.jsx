@@ -2,12 +2,13 @@ import React from "react";
 
 export default function Input({ name, type, label, data, setData }) {
   return (
-    <div className="flex flex-col space-y-2">
-      <label className="font-bold text-xl tracking-wide">{label}:</label>
+    <div className="flex w-full justify-between rounded-md px-8 py-4">
+      <label className="font-semibold text-xl">{label}</label>
       <input
-        className="rounded focus:border-yellowwallow focus:border-2 border-2 outline-none"
+        className="w-[60%] !font-bold text-lg rounded focus:ring-transparent focus:border-padeepBlue focus:border-2 border-2 outline-none"
         type={type}
         name={name}
+        value={data[name]}
         onChange={(e) => {
           setData({ ...data, [e.target.name]: e.target.value });
         }}

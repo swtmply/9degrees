@@ -26,6 +26,7 @@
     "react-indiana-drag-scroll": "^2.1.0",
     "react-paginate": "^8.1.0",
     "react-query": "^3.34.0",
+    "react-tag-input-component": "^1.0.7",
     "swiper": "^7.3.1"
   },
   "devDependencies": {

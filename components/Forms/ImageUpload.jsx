@@ -4,46 +4,36 @@ import Image from "next/image";
 // NOTE: buo na rin siya, styling na lang kulang
 // TODO: Styling
 
-import placeholder from "public/placeholder-image.png";
-import { UploadIcon } from "@heroicons/react/outline";
+import placeholder from "public/samples/placeholder-image.png";
+import { PhotographIcon } from "@heroicons/react/outline";
 
-export default function ImageUpload({ setImage }) {
+export default function ImageUpload({ image, setImage }) {
   // image preview state para lang makita yung nilagay na image
   // dun sa input
-  const [imagePreview, setImagePreview] = useState();
   const [hover, setHover] = useState(false);
 
   return (
-    <div className="flex flex-col w-[40%] bg-gray-100 rounded-md px-8 py-4">
+    <div className="flex w-full justify-between rounded-md px-8 py-4">
       {/* Image Input needs styling */}
-      <label className="relative w-full space-y-2" htmlFor="imageInput">
-        <span className="font-semibold text-xl">File Upload</span>
+      <span className="font-semibold text-xl">File Upload</span>
+
+      <label className="relative w-[60%]" htmlFor="imageInput">
         <div
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
-          className={`relative w-full h-72 ${
-            !imagePreview && "border-4 border-dashed border-yellowwallow"
-          }  flex justify-center items-center`}
+          className={`flex justify-center items-center w-full border-4 space-x-4 border-dashed rounded-md py-4 ${
+            hover
+              ? "border-padeepBlue text-padeepBlue"
+              : "border-gray-500 text-gray-500"
+          }`}
         >
-          <Image
-            src={imagePreview || placeholder}
-            layout="fill"
-            objectFit="cover"
-          />
-          <div
-            className={`${
-              hover
-                ? "transition-all absolute flex flex-col justify-center items-center inset-0 bg-black bg-opacity-20"
-                : "opacity-0 scale-75"
-            }`}
-          >
-            <UploadIcon className="w-12 h-12 text-white" />
-            <p className="font-bold text-lg text-white">
-              Click to upload a file
-            </p>
-          </div>
+          <PhotographIcon className="w-8 h-8" />
+          <p className="font-bold text-lg ">
+            {image?.name || "Click to upload a file"}
+          </p>
         </div>
       </label>
+
       <input
         className="hidden outline-none"
         type="file"
@@ -60,9 +50,6 @@ export default function ImageUpload({ setImage }) {
           // for image preview
           const reader = new FileReader();
           reader.readAsDataURL(file);
-          reader.onloadend = () => {
-            setImagePreview(reader.result);
-          };
         }}
       />
     </div>
