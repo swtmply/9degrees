@@ -67,6 +67,7 @@ export default NextAuth({
       // TODO: return details of user to token
       if (user) {
         token.role = user.role;
+        token.categories = user.categories;
       }
 
       return token;
@@ -77,6 +78,7 @@ export default NextAuth({
       if (token) {
         session.id = token.sub;
         session.user.role = token.role;
+        session.user.categories = token.categories;
       }
 
       return session;

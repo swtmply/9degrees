@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import axios from "axios";
 import { useQuery } from "react-query";
 import { getSession, useSession } from "next-auth/react";
@@ -13,10 +13,10 @@ import Table from "@/components/Table";
 export default function index() {
   const { data: session } = useSession();
   const router = useRouter();
+  const forTrash = true;
 
   const getMine = () => axios.get("/api/articles/mine").then((res) => res.data);
   const { data: mineArticles, isLoading } = useQuery(["my-articles"], getMine);
-  console.log(mineArticles);
 
   return (
     <div className="relative min-h-screen max-h-screen flex">
@@ -36,25 +36,22 @@ export default function index() {
         <div className="flex flex-col rounded-l-lg bg-[#e6e6e6] h-full p-6">
           {/* Header */}
           <div className="pb-9">
-            <Header session={session} />
+            <Header session={session}/>
           </div>
-
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
+    
+          {isLoading ? <Loading />
+            :
+            (<>
               <div className="grid grid-cols-5 gap-6">
+    
                 {/* filter */}
                 <div className="w-full col-start-5">
-                  <button
-                    className="w-full bg-redtagging text-white py-2 px-5 rounded-xl hover:opacity-75 transition duration-700 ease-in-out"
-                    onClick={() => router.push(`/writer/${session?.id}/create`)}
-                  >
+                  <button className="w-full bg-redtagging text-white py-2 px-5 rounded-xl hover:opacity-75 transition duration-700 ease-in-out">
                     <div>create article +</div>
                   </button>
                 </div>
               </div>
-
+    
               {/* table */}
               <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-4 overflow-y-auto">
                 <div className="rounded-md px-3">
@@ -85,8 +82,11 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  
 
   return {
     props: {},
   };
 }
+
+

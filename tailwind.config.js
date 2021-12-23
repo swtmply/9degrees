@@ -11,6 +11,9 @@ module.exports = {
       fontFamily: {
         mono: ["Roboto Mono", "monospace"],
       },
+      fontFamily: {
+        helvetica: ["Helvetica"],
+      },
     },
 
     screens: {
@@ -48,6 +51,9 @@ module.exports = {
       },
       padeepBlue: {
         DEFAULT: "#4100FA",
+      },
+      orange: {
+        DEFAULT: "#F78300",
       },
     },
   },
