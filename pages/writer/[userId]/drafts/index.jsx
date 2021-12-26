@@ -3,6 +3,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import Loading from "@/components/LoadingBox";
 import Logo from "@/components/Logo";
@@ -41,7 +42,7 @@ export default function index() {
 
           {isLoading ? (
             <Loading />
-          ) : (
+          ) : mineArticles?.articles.length > 0 ? (
             <>
               <div className="grid grid-cols-5 gap-6">
                 {/* filter */}
@@ -60,11 +61,23 @@ export default function index() {
                 <div className="rounded-md px-3">
                   <div>
                     <Table mine={mineArticles} session={session} />
-                    {/* pagination */}
                   </div>
                 </div>
               </div>
+                
+              <div>
+                PAGINATION
+              </div>
             </>
+          ) : (
+            <div className="bg-[#f2f2f2] rounded-md">
+              <div className="text-center py-3">
+                Nothing to see in here.{" "}
+                <Link href={`/writer/${session?.id}/create`}>
+                  <a className="text-padeepBlue">Start writing now.</a>
+                </Link>
+              </div>
+            </div>
           )}
         </div>
         {/* white container */}

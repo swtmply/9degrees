@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from "next/image"
-import iconmark from "../public/primarymark-white.svg"
-import wordmark from "../public/wordmark-white.svg"
+import iconmark from "../public/svgs/primarymark-white.svg"
+import wordmark from "../public/svgs/wordmark-white.svg"
 
 export default function Logo() {
   return (

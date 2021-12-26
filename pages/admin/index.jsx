@@ -21,11 +21,16 @@ export default function Dashboard() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const getArticles = async () => await axios.get("/api/articles").then((res) => res.data);
+  const getArticles = async () =>
+    await axios.get("/api/articles").then((res) => res.data);
   const { data, isLoading } = useQuery(["articles"], getArticles);
-  
-  const getMine = async () => await axios.get("/api/articles/mine").then((res) => res.data);
-  const { data: allMine, isLoading: loadingMine } = useQuery(["mine-articles"], getMine);
+
+  const getMine = async () =>
+    await axios.get("/api/articles/mine").then((res) => res.data);
+  const { data: allMine, isLoading: loadingMine } = useQuery(
+    ["mine-articles"],
+    getMine
+  );
 
   return (
     <div className="relative min-h-screen max-h-screen flex">
@@ -45,12 +50,13 @@ export default function Dashboard() {
         <div className="flex flex-col rounded-l-lg bg-[#e6e6e6] h-full p-6">
           {/* Header */}
           <div className="pb-9">
-            <Header session={session}/>
+            <Header session={session} />
           </div>
 
-          {isLoading ? <Loading />
-            :
-            (<>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
               <div className="grid grid-cols-8 gap-6">
                 {/* stats */}
                 <div className="font-helvetica bg-[#ffffff] col-span-6 rounded-2xl">
@@ -58,7 +64,7 @@ export default function Dashboard() {
                     <Statistics all={data} mine={allMine} session={session} />
                   </div>
                 </div>
-    
+
                 {/* create */}
                 <div className="w-full bg-[#ffffff] col-span-2 rounded-2xl">
                   <div className="p-3 space-y-2">
@@ -73,11 +79,13 @@ export default function Dashboard() {
                         </span>
                       </div>
                     </div>
-    
+
                     <div>
-                      <button 
+                      <button
                         className="w-full bg-redtagging text-white py-2 px-5 rounded-xl hover:opacity-75 transition duration-650 ease-in-out"
-                        onClick={() => router.push(`/writer/${session?.id}/create`)}
+                        onClick={() =>
+                          router.push(`/writer/${session?.id}/create`)
+                        }
                       >
                         <div>create article +</div>
                       </button>
@@ -85,7 +93,7 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-    
+
               {/* table */}
               <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
                 <div className="rounded-md px-3">
@@ -93,6 +101,9 @@ export default function Dashboard() {
                     <Table all={data} mine={allMine} session={session} />
                   </div>
                 </div>
+              </div>
+              <div>
+                PAGINATION
               </div>
             </>
           )}

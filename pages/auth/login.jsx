@@ -21,7 +21,6 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,8 +49,8 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center ">
-      <div className="shadow-lg bg-white rounded-md w-[30%] p-8 space-y-5 ">
+    <div className="flex flex-col min-h-screen justify-center items-center bg-white">
+      <div className="shadow-xl bg-[#f2f2f2] rounded-md w-[30%] p-8 space-y-5 ">
         <div className="text-center">
           <Image src={slogan} width={2} height={1} layout="responsive" />
 

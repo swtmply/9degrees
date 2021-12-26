@@ -30,7 +30,7 @@ export default function ColumnArticle({ article }) {
   };
 
   return (
-    // <Link href={`/articles/a/${article._id}`}>
+    <Link href={`/articles/a/${article._id}`}>
     <div
       data-aos="fade-up"
       className="flex flex-col items-center justify-center lg:space-x-4 lg:flex-row lg:items-end lg:justify-start"
@@ -60,6 +60,6 @@ export default function ColumnArticle({ article }) {
         <div className="lg:text-left text-center">{slidesPerView()}</div>
       </div>
     </div>
-    // </Link>
+    </Link>
   );
 }

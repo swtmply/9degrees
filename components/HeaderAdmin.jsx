@@ -9,12 +9,7 @@ import avatar from '../public/avatar.jpg'
 
 export default function HeaderAdmin({ session }) {
   const [keyword, setKeyword] = useState("")  
-//   const onChange = (e) => {
-//     //for search
-//     setKeyword(
-//         [e.target.name]: [e.target.value]
-//     )
-//   }
+
   return (
     <>
       <div className="grid grid-cols-3 gap-4">
@@ -39,8 +34,14 @@ export default function HeaderAdmin({ session }) {
                 <Menu as="div" className="relative inline-block text-left" >
                   <div>
                     <Menu.Button className="inline-flex justify-center text-sm font-medium text-white rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"> 
-                      <div className="rounded-md bg-white w-12 h-12">
-                      </div>
+                      {session?.user.image 
+                        ? <Image
+                            src={session?.user.image}
+                            width={50}
+                            height={50}
+                          />
+                        : <div className="rounded-md bg-white w-12 h-12"></div>
+                      }
                         {/* <Image
                         src={avatar}
                         width={50}
@@ -63,7 +64,7 @@ export default function HeaderAdmin({ session }) {
                         {({ active }) => (
                           <a
                           className={`${
-                            active ? 'bg-yellowwallow' : 'bg-white'
+                            active ? 'bg-[#e6e6e6]' : 'bg-white'
                           } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                           href={`/writer/${session.id}/profile`}
                           >
@@ -78,7 +79,7 @@ export default function HeaderAdmin({ session }) {
                         {({ active }) => (
                           <a
                           className={`${
-                            active ? 'bg-yellowwallow' : 'bg-white'
+                            active ? 'bg-[#e6e6e6]' : 'bg-white'
                           } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                           href={`/admin/${session.user.categories}/manage-team/`} 
                           >
@@ -92,7 +93,7 @@ export default function HeaderAdmin({ session }) {
                         {({ active }) => (
                           <button
                           className={`${
-                            active ? 'bg-yellowwallow' : 'bg-white'
+                            active ? 'bg-[#e6e6e6]' : 'bg-white'
                           } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                           onClick={() => signOut()}
                           

@@ -17,10 +17,12 @@ export default function DashboardStats({ all, mine, session}) {
   let mineApproved = 0; //Green
   let minePublished = 0;
   let mineDeleted = 0;
+  
   let draft = 0;
   let forApproval = 0;
   let approved = 0;
   let published = 0;
+  let total = 0;
 
   mine?.articles.map((article) => {
     if (article.isDeleted) mineDeleted++
@@ -45,6 +47,7 @@ export default function DashboardStats({ all, mine, session}) {
 
     if (session?.user.role == "Editor-in-Chief") {
       if (!article.isDeleted) {
+        total++;
         if (article.status == "draft") draft++
         if (article.status == "forApproval") forApproval++
         if (article.status == "approved") approved++
@@ -62,7 +65,7 @@ export default function DashboardStats({ all, mine, session}) {
               ? (mine ? mine?.articles.length : 0)
               : session?.user.role == "Head" 
               ? (mineCategory ? mineCategory : 0)
-              : (all ? all?.articles.length : 0)}
+              : (all ? total : 0)}
           </div>
           <div className="stats-label rounded-l-xl">
               <ClipboardListIcon className="pointer-events-none w-4 h-4" />
