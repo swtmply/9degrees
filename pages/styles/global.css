@@ -157,6 +157,19 @@ article > div > p > span {
   margin-left: 0.5rem;
 }
 
+.table-container::-webkit-scrollbar {
+  width: .6vw;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #7775;
+  border-radius: 16px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(144, 144, 144);
+}
+
 .table {
   border-spacing: 0 15px;
 }
@@ -187,3 +200,4 @@ tr th:nth-child(1) {
 .flex-continer > * {
   flex: 0 0 auto;
 }
+

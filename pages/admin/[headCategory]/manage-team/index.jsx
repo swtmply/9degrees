@@ -58,7 +58,7 @@ export default function index() {
                 </div>
               </div>
 
-              <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-4 overflow-y-auto">
+              <div className="table-container flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-4 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <table className="table table-fixed w-full border-separate space-y-6 text-sm">
                     <thead className="bg-white text-left sticky top-0">

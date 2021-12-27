@@ -24,14 +24,11 @@ import { list } from "postcss";
 import { Checkbox } from "@/components/Forms/Checkbox";
 
 const updateUser = async (data) => {
-  return await axios.put(
-    `http://localhost:3000/api/user/${router.query.userId}`,
-    data
-  );
+  return await axios.put(`http://localhost:3000/api/user/${data.id}`, data);
 };
 
 export default function index({ user }) {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const router = useRouter();
 
   const [name, setName] = useState(user.name);
@@ -39,14 +36,22 @@ export default function index({ user }) {
   const [selectedCategories, setSelectedCategories] = useState(user.categories);
   const [role, setRole] = useState(user.role);
 
+  //
   const handleCheckBox = () => {
     console.log("hanlde cb to do");
   };
 
   const mutation = useMutation(updateUser);
-  const handleSubmit = () => {
-    mutation.mutate({ name, email, categories: selectedCategories, role });
-    console.log(":HELLOO");
+  const handleSubmit = (e) => {
+    e.prevenDefault();
+    mutation.mutate({
+      name,
+      email,
+      categories: selectedCategories,
+      role,
+      id: router.query.userId,
+    });
+    // updateUser({ name, email, categories: selectedCategories, role });
     document.location.reload();
   };
 
@@ -126,7 +131,7 @@ export default function index({ user }) {
                     </div>
                   </div>
 
-                  <Listbox value={role} onChange={setRole} >
+                  <Listbox value={role} onChange={setRole}>
                     {({ open }) => (
                       <div className="relative ">
                         <Listbox.Button className="flex justify-between items-center rounded-md w-[80%] px-4 py-2 bg-[#e6e6e6] font-bold">
@@ -164,7 +169,7 @@ export default function index({ user }) {
                       setSelectedCategories={setSelectedCategories}
                       items={categoryList}
                     /> */}
-
+                    {/* TODO EIC option visible lang sa EIC? */}
                     <div className="space-y-2">
                       <p className="font-bold text-xl my-4">Category</p>
                       {categoryList.map((item, i) => (
@@ -197,7 +202,11 @@ export default function index({ user }) {
                     </button>
                     <button
                       className="px-4 py-2 bg-gray-200 text-sm font-semibold rounded-md hover:bg-opacity-75 transition duration-700 ease-in-out "
-                      onClick={() => router.push(`/admin/${session?.user.categories}/manage-team`)}
+                      onClick={() =>
+                        router.push(
+                          `/admin/${session?.user.categories}/manage-team`
+                        )
+                      }
                     >
                       Cancel
                     </button>
@@ -214,13 +223,11 @@ export default function index({ user }) {
   );
 }
 
-
-
 export async function getStaticPaths() {
   const res = await axios
     .get("http://localhost:3000/api/user/")
     .then((res) => res.data);
-  // TODO get category ni logged in user 
+  // TODO get category ni logged in user
   const users = res.users;
   const paths = users.map((user) => ({
     params: { headCategory: "all", userId: user._id },

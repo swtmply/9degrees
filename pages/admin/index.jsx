@@ -95,7 +95,7 @@ export default function Dashboard() {
               </div>
 
               {/* table */}
-              <div className="flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
+              <div className="table-container flex-1 max-h-full bg-[#f2f2f2] rounded-2xl mt-6 overflow-y-auto">
                 <div className="rounded-md px-3">
                   <div>
                     <Table all={data} mine={allMine} session={session} />
