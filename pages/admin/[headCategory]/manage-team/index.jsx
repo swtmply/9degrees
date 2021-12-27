@@ -72,6 +72,7 @@ export default function index() {
                       </tr>
                     </thead>
                     <tbody>
+                      {/* TODO filter users according to category of logged in user */}
                       {data?.users.map((user) => (
                         <Link
                           href={`/admin/${session?.user.categories}/manage-team/edit/${user._id}`}

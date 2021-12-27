@@ -25,9 +25,11 @@ export default function EditUserProfile() {
   const router = useRouter();
   const { data, isLoading } = useQuery(["user"], getUserMe);
   const [image, setImage] = useState();
+  const [confirmPassword, setConfirmPassword] = useState("") 
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
+    password: "",
     bio: "",
     image: "",
     socials: {
@@ -57,6 +59,9 @@ export default function EditUserProfile() {
             },
       });
     }
+    // if (mutation.isSuccess) {
+    //   router.back();
+    // }
   }, [data]);
 
   const handleChange = (e) => {
@@ -78,18 +83,21 @@ export default function EditUserProfile() {
   };
 
   const handleSubmit = async () => {
-    // image upload to cloudinary API
+    if (formValues.password != confirmPassword) {
+      alert("Passwords are not matched.")
+    } else {
+      // image upload to cloudinary API
+      if (image) {
+        const upload = await imageUpload(image);
+        // set data image to url of image
+        formValues.image = upload.url;
+      }
+      // console.log(formValues);
 
-    if (image) {
-      const upload = await imageUpload(image);
-      // set data image to url of image
-      formValues.image = upload.url;
+      // API call
+      mutation.mutate(formValues);
+      router.back();
     }
-
-    // console.log(formValues);
-
-    // API call
-    mutation.mutate(formValues);
   };
 
   if (isLoading) return <>Loading...</>;
@@ -97,31 +105,15 @@ export default function EditUserProfile() {
   return (
     <div className="flex min-h-screen relative bg-gray-100">
       <div className="bg-gray-200 flex flex-col w-[500px] max-w-[30%] h-screen sticky top-0">
-        <div className="py-2 px-4 flex justify-between">
-          <button
-            onClick={async () => {
-              const result = await signOut({
-                redirect: false,
-                callbackUrl: "/",
-              });
-
-              router.push(result.url);
-            }}
-          >
-            <LogoutIcon className="w-8 h-8" />
-          </button>
-          {/* Go to dashboard button icon */}
-          <Link href={`/writer/${router.query.userId}/dashboard`}>
-            <a>
-              <CogIcon className="w-8 h-8 cursor-pointer" />
-            </a>
-          </Link>
-        </div>
         <div className="w-full flex justify-center">
-          <div className="w-[80%] flex flex-col space-y-16">
-            <div className="self-center flex flex-col">
+          <div className="w-[80%] flex flex-col space-y-16 mt-10">
+            <div className="w-full self-center flex flex-col">
               <div className="rounded-full w-[200px] h-[200px] bg-yellowwallow self-center relative">
-                <UserImageUpload setImage={setImage} image={formValues.image} />
+                <UserImageUpload
+                  setImage={setImage}
+                  image={formValues.image}
+                  className="cursor-pointer"
+                />
               </div>
 
               <div className="mt-8 border-b-2 border-black flex flex-col">
@@ -129,7 +121,7 @@ export default function EditUserProfile() {
                   name
                 </span>
                 <input
-                  className="font-bold text-2xl bg-transparent outline-none border-none focus:ring-0"
+                  className="w-full text-xl bg-transparent outline-none border-none focus:ring-0"
                   type="text"
                   name="name"
                   value={formValues.name || ""}
@@ -142,7 +134,7 @@ export default function EditUserProfile() {
                   email
                 </span>
                 <input
-                  className="font-bold text-xl bg-transparent outline-none border-none focus:ring-0"
+                  className="w-full text-xl bg-transparent outline-none border-none focus:ring-0"
                   type="text"
                   name="email"
                   value={formValues.email || ""}
@@ -155,7 +147,7 @@ export default function EditUserProfile() {
                   bio
                 </span>
                 <textarea
-                  className="text-xl bg-transparent outline-none border-none focus:ring-0"
+                  className="w-full text-xl bg-transparent outline-none border-none focus:ring-0"
                   type="text"
                   name="bio"
                   value={formValues.bio || ""}
@@ -168,71 +160,87 @@ export default function EditUserProfile() {
       </div>
       <main className="w-full p-8">
         <div>
-          <h2 className="font-bold text-3xl mb-8">Socials</h2>
-          <div className="space-y-8 font-semibold text-lg w-[45%]">
-            <p className="space-x-16 flex justify-between items-center">
-              <span>Facebook</span>
+          <h2 className="font-bold text-2xl mb-5">Socials</h2>
+          {/* <div className="space-y-8 font-semibold text-lg w-[45%]"> */}
+          <div className="grid grid-cols-4 text-lg">
+            <div className="font-semibold space-y-4 mt-2">
+              <p className="space-x-16 flex justify-between items-center">
+                <span>Facebook</span>
+              </p>
+              <p className="space-x-16 flex justify-between items-center">
+                <span>Twitter</span>
+              </p>
+              <p className="space-x-16 flex justify-between items-center">
+                <span>Instagram</span>
+              </p>
+            </div>
+            <div className="col-span-2">
+              <p className="flex justify-between items-center">
+                <input
+                  className="text-lg w-[400px] bg-transparent outline-none border-none focus:ring-0"
+                  type="text"
+                  name="facebook"
+                  value={formValues?.socials.facebook || ""}
+                  onChange={handleSocialChange}
+                  placeholder="Enter link from website"
+                />
+              </p>
+              <p className="flex justify-between items-center">
+                <input
+                  className="text-lg w-[400px] bg-transparent outline-none border-none focus:ring-0"
+                  type="text"
+                  name="twitter"
+                  value={formValues?.socials.twitter || ""}
+                  onChange={handleSocialChange}
+                  placeholder="Enter link from website"
+                />
+              </p>
+              <p className="flex justify-between items-center">
+                <input
+                  className="text-lg w-[400px] bg-transparent outline-none border-none focus:ring-0"
+                  type="text"
+                  name="instagram"
+                  value={formValues?.socials.instagram || ""}
+                  onChange={handleSocialChange}
+                  placeholder="Enter link from website"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+        <div >
+          <h2 className="font-bold text-2xl mt-8 mb-5">Change Password</h2>
+          <div className="grid grid-cols-4 text-lg">
+            <div className="mt-2 space-y-8">
+              <p>New Password</p>
+              <p>Confirm Password</p>
+            </div>
+            <div className="space-y-4">
               <input
-                className="text-xl w-[400px] bg-transparent outline-none border-none focus:ring-0"
-                type="text"
-                name="facebook"
-                value={formValues?.socials.facebook || ""}
-                onChange={handleSocialChange}
-                placeholder="Enter link from website"
+                className="w-full text-md rounded-lg shadow-md outline-none border-none focus:ring-0"
+                type="password"
+                name="password"
+                value={formValues.password || ""}
+                placeholder="Enter new password"
+                onChange={handleChange}
               />
-            </p>
-            <p className="space-x-16 flex justify-between items-center">
-              <span>Twitter</span>
               <input
-                className="text-xl w-[400px] bg-transparent outline-none border-none focus:ring-0"
-                type="text"
-                name="twitter"
-                value={formValues?.socials.twitter || ""}
-                onChange={handleSocialChange}
-                placeholder="Enter link from website"
+                className="w-full text-md rounded-lg shadow-md outline-none border-none focus:ring-0"
+                type="password"
+                name="confirmPassword"
+                value={confirmPassword || ""}
+                placeholder="Confirm password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
-            </p>
-            <p className="space-x-16 flex justify-between items-center">
-              <span>Instagram</span>
-              <input
-                className="text-xl w-[400px] bg-transparent outline-none border-none focus:ring-0"
-                type="text"
-                name="instagram"
-                value={formValues?.socials.instagram || ""}
-                onChange={handleSocialChange}
-                placeholder="Enter link from website"
-              />
-            </p>
+            </div>
           </div>
         </div>
         <button
           onClick={() => handleSubmit()}
-          className="py-4 px-8 text-white text-lg font-semibold bg-padeepBlue rounded-md"
+          className={`py-4 px-8 text-white text-lg font-semibold bg-padeepBlue rounded-md ${mutation.isLoading && 'cursor-progress'}`}
         >
           Save
         </button>
-        <div className="mt-16">
-          <h2 className="font-bold text-3xl mb-8">Writer Info</h2>
-          <div className="w-full flex flex-col">
-            <div>
-              <div className="flex font-semibold text-xl items-center my-4">
-                <DocumentTextIcon className="w-12 h-12 mr-4" />
-                10 Drafts
-              </div>
-              <div className="flex font-semibold text-xl items-center my-4">
-                <DocumentTextIcon className="w-12 h-12 mr-4" />
-                12 Published Articles
-              </div>
-            </div>
-            <div>
-              <p className="font-bold text-2xl">Writing for</p>
-              <div className="flex font-semibold text-xl items-center my-4">
-                <DocumentTextIcon className="w-12 h-12 mr-4" />
-                Cultures and Lifestyle
-              </div>
-            </div>
-          </div>
-        </div>
       </main>
     </div>
   );

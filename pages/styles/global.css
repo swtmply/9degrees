@@ -201,3 +201,41 @@ tr th:nth-child(1) {
   flex: 0 0 auto;
 }
 
+/* for dashboard icon tooltip */
+.chartbar::before,
+.chartbar::after {
+  --scale: 0;
+  --arrow-size: 8px;
+  --tooltip-color: #f9f9f9;
+  bottom: -2.25rem;
+  position: absolute;
+  transform: translateX(var(--translate-x, 0)) translateY(var(--translate-y, 0)) scale(var(--scale));
+  transition: 250ms transform;
+  transform-origin: top left;
+  z-index: 20;
+}
+
+.chartbar::before {
+  --translate-y: calc(10% + var(--arrow-size));
+  background: var(--tooltip-color);
+  border-radius: .3rem;
+  bottom: -2.25rem;
+  content: attr(tooltip);
+  padding: .4rem;
+  width: max-content;
+}
+
+.chartbar::after {
+  --translate-x: 30%;
+  --translate-y: calc(-3 * var(--arrow-size));
+  content: '';
+  border: 10px solid transparent;
+  border-bottom-color: var(--tooltip-color);
+  transform-origin: bottom center;
+  
+}
+
+.chartbar:hover::before,
+.chartbar:hover::after {
+  --scale: 1;
+}

@@ -1,6 +1,7 @@
 import Users from "@/models/Users";
 import mongoDBConnect from "@/lib/mongoDBConnect";
 import { getSession } from "next-auth/react";
+import bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -17,8 +18,11 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: "Failed to fetch user" });
       }
     case "PUT":
+      const { password } = req.body;
+      //TODO if password -> update password
       try {
-        const session = await getSession({ req });
+        const session = await getSession({ req });lora
+
         const user = await Users.findByIdAndUpdate(
           session.id,
           {

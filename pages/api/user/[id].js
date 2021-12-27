@@ -32,9 +32,9 @@ export default async function handler(req, res) {
         );
 
         if (newUser)
-          return res.status(201).json({ message: "Article has been updated" });
+          return res.status(201).json({ message: "User has been updated" });
       } catch (error) {
-        return res.status(400).json({ message: "Couldn't update article" });
+        return res.status(400).json({ message: "Couldn't update user" });
       }
       break;
   }

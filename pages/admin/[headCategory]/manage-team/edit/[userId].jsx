@@ -43,7 +43,7 @@ export default function index({ user }) {
 
   const mutation = useMutation(updateUser);
   const handleSubmit = (e) => {
-    e.prevenDefault();
+    e.preventDefault();
     mutation.mutate({
       name,
       email,
@@ -130,7 +130,7 @@ export default function index({ user }) {
                       />
                     </div>
                   </div>
-
+                  {/* TODO make EIC option visible if session.user.role == Editor-in-Chief */}
                   <Listbox value={role} onChange={setRole}>
                     {({ open }) => (
                       <div className="relative ">
@@ -169,7 +169,7 @@ export default function index({ user }) {
                       setSelectedCategories={setSelectedCategories}
                       items={categoryList}
                     /> */}
-                    {/* TODO EIC option visible lang sa EIC? */}
+                    
                     <div className="space-y-2">
                       <p className="font-bold text-xl my-4">Category</p>
                       {categoryList.map((item, i) => (
@@ -230,7 +230,7 @@ export async function getStaticPaths() {
   // TODO get category ni logged in user
   const users = res.users;
   const paths = users.map((user) => ({
-    params: { headCategory: "all", userId: user._id },
+    params: { headCategory: "community", userId: user._id },
   }));
 
   return {
