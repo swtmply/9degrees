@@ -36,7 +36,6 @@ export default async function handler(req, res) {
           query = query.skip(skip).limit(pageSize);
 
           const articles = await query;
-          console.log("all", articles.length)
           if (articles)
             return res
               .status(200)

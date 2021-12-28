@@ -1,32 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useMutation } from "react-query";
 
-import Dialog from "./ConfirmDialog";
+// import Dialog from "./ConfirmDialog";
+import { Dialog, Transition } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/solid";
 
+export const deleteArticle = async (articleId) => {
+  const res = await axios.delete(
+    `http://localhost:3000/api/articles/${articleId}`
+  );
+  return res;
+};
+
+export const updateArticle = async (data) => {
+  const res = await axios
+    .put(`http://localhost:3000/api/articles/${data.id}`, data)
+    .then((res) => res.data);
+
+  return res;
+};
+
 export default function Table({ all, mine, session }) {
-  
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [recover, setRecover] = useState(false);
+  const [articleId, setArticleId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
   let onHomePage = false;
   let onArticlesPage = false;
   let onDraftsPage = false;
   let onTrashPage = false;
 
-  if (document.location.pathname.includes("admin")) 
-    onHomePage = true;
+  if (document.location.pathname.includes("admin")) onHomePage = true;
+  if (document.location.pathname.includes("articles")) onArticlesPage = true;
+  if (document.location.pathname.includes("drafts")) onDraftsPage = true;
+  if (document.location.pathname.includes("trash")) onTrashPage = true;
 
-  if (document.location.pathname.includes("articles")) 
-    onArticlesPage = true;
-  
-  if (document.location.pathname.includes("drafts")) 
-    onDraftsPage = true;
-
-  if (document.location.pathname.includes("trash")) 
-    onTrashPage = true;
-  
   //filter articles
   const articles = new Array();
   if (onHomePage) {
@@ -71,12 +82,29 @@ export default function Table({ all, mine, session }) {
     });
   }
 
+  const handleAction = () => {
+    if (onTrashPage) {
+      setIsDeleted(false);
+      alert("Article will be permanently deleted.");
+    } else {
+      alert("Article will be moved to trash");
+      setIsDeleted(true);
+    }
+  };
 
-  // const handleDelete = async (articleId) => {
-  //   return await axios.delete(`/api/articles/${articleId}`).then(() => {
-  //     setIsLoading(false);
-  //   });
-  // };
+  useEffect(() => {
+    if (isDeleted) {
+      updateArticle({ isDeleted, id: articleId });
+      setIsDeleted(false);
+    }
+
+    if (!recover && !isDeleted && onTrashPage) 
+      deleteArticle(articleId);
+    
+    if (recover && !isDeleted && onTrashPage) 
+      updateArticle({ isDeleted, id: articleId })
+
+  }, [isOpen, isDeleted, recover, onTrashPage]);
 
   return (
     <>
@@ -94,7 +122,6 @@ export default function Table({ all, mine, session }) {
           </tr>
         </thead>
         <tbody>
-          {/* todo */}
           {articles.map((article) => {
             return (
               <Link href={"/admin"} className="w-full">
@@ -160,25 +187,36 @@ export default function Table({ all, mine, session }) {
                     )}
                   </td>
 
-                  <td className="px-4 pt-1 pb-4">
+                  <td className="space-y-5 px-4 pt-1 pb-4">
+                      {onTrashPage && <button
+                       onClick={() => {
+                        setArticleId(article._id);
+                        setIsDeleted(false);
+                        setRecover(true);
+                      }}
+                    >
+                      <h1 className="text-sm">Recover</h1>
+                    </button>}
                     <button
                       onClick={() => {
                         setIsOpen(true);
-                        setIsLoading(true);
+                        setArticleId(article._id);
+                        handleAction();
                       }}
                     >
-                      <TrashIcon className="w-5 h-5 " />
+                      <h1 className="text-sm">Delete</h1>
+                      {/* <TrashIcon className="w-5 h-5 " /> */}
                     </button>
                   </td>
                   {/* TODO dialog ayaw gumana hmf*/}
-                  {isLoading && (
+                  {/* {isLoading && (
                     <Dialog
                       isOpen={isOpen}
                       setIsOpen={setIsOpen}
                       articleId={article._id}
                       onTrashPage={onTrashPage}
                     />
-                  )}
+                  )} */}
                 </tr>
               </Link>
             );

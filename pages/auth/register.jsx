@@ -11,8 +11,7 @@ import Sidebar from "@/components/SidebarMenu";
 
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react"
-
+import { useSession } from "next-auth/react";
 
 const createUser = async (data) => {
   return await axios.post("/api/auth/signup", data);
@@ -26,13 +25,13 @@ export default function Register() {
     name: "",
     email: "",
     password: "",
-    // Sinama ko to kasi pag nagreregister wala yung socials na field. 
+    // Sinama ko to kasi pag nagreregister wala yung socials na field.
     // Tapos nag-eerror pag vineview ko yung writer's profile page
     socials: {
       facebook: "",
       twitter: "",
-      instagram: ""
-    }
+      instagram: "",
+    },
   });
 
   const [role, setRole] = useState(roles[0]);
@@ -46,7 +45,7 @@ export default function Register() {
     mutation.mutate({ ...data, role, categories: selectedCategories });
     router.back();
   };
-  
+
   return (
     <div className="relative min-h-screen max-h-screen flex">
       <div className="bg-padeepBlue w-64 grid grid-rows-3">
@@ -65,37 +64,43 @@ export default function Register() {
         <div className="flex flex-col rounded-l-lg bg-[#e6e6e6] h-full p-6">
           <div className="min-h-full">
             {/* <div className="flex flex-col justify-center items-center"> */}
-              <div className="bg-white rounded-lg shadow-lg max-h-full w-[100%] p-2 overflow-y-auto">
-                <div className="bg-[#e6e6e6] rounded-md">
-                  <h1 className="text-2xl py-3 pl-5">Add New User</h1>
+            <div className="table-container bg-white rounded-lg shadow-lg max-h-full w-[100%] p-2 overflow-y-auto">
+              <div className="bg-[#e6e6e6] rounded-md">
+                <h1 className="text-2xl py-3 pl-5">Add New User</h1>
+              </div>
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col space-y-5 p-8"
+              >
+                {/* <div className="grid grid-cols-2 gap-5"> */}
+                {/* <div className="flex flex-col items-center space-x-5"> */}
+                <div>
+                  <Input
+                    name="name"
+                    type="text"
+                    label="Name"
+                    data={data}
+                    setData={setData}
+                  />
+                  <Input
+                    name="email"
+                    type="text"
+                    label="Email"
+                    data={data}
+                    setData={setData}
+                  />
+                  <Input
+                    name="password"
+                    type="password"
+                    label="Password"
+                    data={data}
+                    setData={setData}
+                  />
                 </div>
-                <form onSubmit={handleSubmit} className="flex flex-col space-y-2 p-8">
-                  {/* <div className="grid grid-cols-2 gap-5"> */}
-                    {/* <div className="flex flex-col items-center space-x-5"> */}
-                      <Input
-                        name="name"
-                        type="text"
-                        label="Name"
-                        data={data}
-                        setData={setData}
-                      />
-                      <Input
-                        name="email"
-                        type="text"
-                        label="Email"
-                        data={data}
-                        setData={setData}
-                      />
-                      <Input
-                        name="password"
-                        type="password"
-                        label="Password"
-                        data={data}
-                        setData={setData}
-                      />
-                    {/* </div> */}
-                  {/* </div> */}
-        
+                {/* </div> */}
+                {/* </div> */}
+
+                {session?.user.role == "Editor-in-Chief" && (
                   <Listbox value={role} onChange={setRole}>
                     {({ open }) => (
                       <div className="relative ">
@@ -115,7 +120,9 @@ export default function Register() {
                               value={role}
                             >
                               {({ selected }) => (
-                                <span className={`${selected ? "font-bold" : ""}`}>
+                                <span
+                                  className={`${selected ? "font-bold" : ""}`}
+                                >
                                   {role}
                                 </span>
                               )}
@@ -125,31 +132,32 @@ export default function Register() {
                       </div>
                     )}
                   </Listbox>
-        
-                  <div className="px-6">
-                    <Checkbox
-                      selectedCategories={selectedCategories}
-                      setSelectedCategories={setSelectedCategories}
-                      items={categoryList}
-                    />
-                  </div>
+                )}
 
-                  <div className="space-x-3 my-5">
-                    <button
-                      className="px-4 py-2 bg-yellowwallow text-sm font-semibold rounded-md hover:bg-opacity-75 transition duration-700 ease-in-out"
-                      type="submit"
-                    >
-                      Register
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-gray-200 text-sm font-semibold rounded-md hover:bg-opacity-75 transition duration-700 ease-in-out "
-                      onClick={() => router.back()}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              </div>
+                <div className="px-6 mb-5">
+                  <Checkbox
+                    selectedCategories={selectedCategories}
+                    setSelectedCategories={setSelectedCategories}
+                    items={categoryList}
+                  />
+                </div>
+
+                <div className="space-x-3 mb-5">
+                  <button
+                    className="px-5 py-2 bg-yellowwallow text-md font-semibold rounded-md hover:bg-opacity-75 transition duration-700 ease-in-out"
+                    type="submit"
+                  >
+                    Register
+                  </button>
+                  <button
+                    className="px-5 py-2 bg-gray-200 text-md font-semibold rounded-md hover:bg-opacity-75 transition duration-700 ease-in-out "
+                    onClick={() => router.back()}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
             {/* </div> */}
           </div>
         </div>
@@ -157,6 +165,5 @@ export default function Register() {
       </div>
       {/* main*/}
     </div>
-    
   );
 }

@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import {
   UserCircleIcon,
@@ -12,6 +13,7 @@ import { Menu, Transition } from "@headlessui/react";
 import avatar from "../public/avatar.jpg";
 
 export default function HeaderAdmin({ session }) {
+  const router = useRouter();
   const [keyword, setKeyword] = useState("");
 
   return (
@@ -72,7 +74,7 @@ export default function HeaderAdmin({ session }) {
                               className={`${
                                 active ? "bg-[#e6e6e6]" : "bg-white"
                               } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                              href={`/writer/${session.id}/profile`}
+                              href={`/writer/${session?.id}/profile`}
                             >
                               <div className="flex items-center space-x-3">
                                 <UserCircleIcon className="w-6 h-6" />
@@ -108,7 +110,14 @@ export default function HeaderAdmin({ session }) {
                               className={`${
                                 active ? "bg-[#e6e6e6]" : "bg-white"
                               } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                              onClick={() => signOut()}
+                              onClick={async () => {
+                                const result = await signOut({
+                                  redirect: false,
+                                  callbackUrl: "/",
+                                });
+
+                                router.push(result.url);
+                              }}
                             >
                               <div className="flex items-center space-x-3">
                                 <LogoutIcon className="w-6 h-6" />

@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       // for writer's tab kkunin lahat ng articles under their name
       try {
         const articles = await Articles.find({ writer: session.user.name});
-        return res.status(200).json({ articles })
+        return res.status(200).json({ articles: articles.reverse() })
     } catch (error) {
         return res.status(400).json({ message: "Failed to fetch articles" })
     }

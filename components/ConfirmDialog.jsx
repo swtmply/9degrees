@@ -7,7 +7,11 @@ export default function ConfirmDialog({ isOpen, setIsOpen, articleId, onTrashPag
 
 
   console.log("dialog article Id", articleId)
+  
   const closeDialog = () => {
+    setIsOpen(false);
+  }
+  const deleteHandler = () => {
     setIsOpen(false)
     if (onTrashPage) {
       // axios.delete()
@@ -41,13 +45,13 @@ export default function ConfirmDialog({ isOpen, setIsOpen, articleId, onTrashPag
 
           <button
             className="px-16 py-2 float-right font-bold uppercase focus:outline-none mt-5 bg-yellowwallow rounded-md"
-            onClick={setIsOpen(false)}
+            onClick={closeDialog}
           >
             Cancel
           </button>
           <button
             className="px-16 py-2 float-right font-bold uppercase focus:outline-none mt-5 bg-yellowwallow rounded-md"
-            onClick={closeDialog}
+            onClick={deleteHandler}z
           >
             Yes
           </button>

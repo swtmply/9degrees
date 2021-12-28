@@ -47,7 +47,6 @@ export default function UserProfile() {
 
   let draftCount = 0;
   let publishedCount = 0;
-  let iconColor = "";
 
   allMine?.articles.map((article) => {
     if (article.status == "draft" && !article.isDeleted) draftCount++;
