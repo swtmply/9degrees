@@ -14,7 +14,6 @@ import Table from "@/components/Table";
 export default function index() {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(session);
 
   let mineForApproval = 0;
   let mineApproved = 0;
@@ -22,7 +21,6 @@ export default function index() {
 
   const getMine = () => axios.get("/api/articles/mine").then((res) => res.data);
   const { data: mineArticles, isLoading } = useQuery(["my-articles"], getMine);
-  console.log("minearticles", mineArticles);
 
   return (
     <div className="relative min-h-screen max-h-screen flex">

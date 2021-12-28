@@ -16,7 +16,6 @@ export default function index() {
 
   const getMine = () => axios.get("/api/articles/mine").then((res) => res.data);
   const { data: mineArticles, isLoading } = useQuery(["my-articles"], getMine);
-  console.log("TRASH length", mineArticles?.articles.length)
   return (
     <div className="relative min-h-screen max-h-screen flex">
       <div className="bg-padeepBlue w-64 grid grid-rows-3">
