@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { useRouter } from "next/router";
@@ -25,6 +25,17 @@ export default function index() {
   const filteredUsers = data?.users.filter((user) =>
     user.categories.includes(session?.user.categories.toString())
   );
+
+  const users = new Array()
+  if (session?.user.role == "Editor-in-Chief") {
+    data?.users.map((u) => {
+      users.push(u)
+    })
+  } else {
+    filteredUsers && filteredUsers.map((u) => {
+      users.push(u)
+    })
+  }
 
   return (
     <div className="relative min-h-screen max-h-screen flex">
@@ -77,7 +88,7 @@ export default function index() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredUsers.map((user) => (
+                      {users.map((user) => (
                         <Link
                           href={`/admin/${session?.user.categories}/manage-team/edit/${user._id}`}
                         >
