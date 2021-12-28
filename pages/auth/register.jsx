@@ -23,10 +23,16 @@ export default function Register() {
   const router = useRouter();
 
   const [data, setData] = useState({
-    username: "",
     name: "",
     email: "",
     password: "",
+    // Sinama ko to kasi pag nagreregister wala yung socials na field. 
+    // Tapos nag-eerror pag vineview ko yung writer's profile page
+    socials: {
+      facebook: "",
+      twitter: "",
+      instagram: ""
+    }
   });
 
   const [role, setRole] = useState(roles[0]);
@@ -38,16 +44,8 @@ export default function Register() {
     e.preventDefault();
 
     mutation.mutate({ ...data, role, categories: selectedCategories });
-
-    // if (mutation.isSuccess) router.push(`/admin/${session?.user.categories}/manage-team`);
-    // console.log(data, selectedCategories, role);
+    router.back();
   };
-
-  useEffect(() => {
-    if (mutation.isSuccess) 
-    router.push(`/admin/${session?.user.categories}/manage-team`);
-  }, [mutation.isSuccess])
-
   
   return (
     <div className="relative min-h-screen max-h-screen flex">

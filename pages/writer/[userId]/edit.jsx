@@ -59,9 +59,6 @@ export default function EditUserProfile() {
             },
       });
     }
-    // if (mutation.isSuccess) {
-    //   router.back();
-    // }
   }, [data]);
 
   const handleChange = (e) => {
@@ -83,6 +80,7 @@ export default function EditUserProfile() {
   };
 
   const handleSubmit = async () => {
+    console.log("handlesubmit")
     if (formValues.password != confirmPassword) {
       alert("Passwords are not matched.")
     } else {
@@ -92,8 +90,6 @@ export default function EditUserProfile() {
         // set data image to url of image
         formValues.image = upload.url;
       }
-      // console.log(formValues);
-
       // API call
       mutation.mutate(formValues);
       router.back();
@@ -235,12 +231,20 @@ export default function EditUserProfile() {
             </div>
           </div>
         </div>
-        <button
-          onClick={() => handleSubmit()}
-          className={`py-4 px-8 text-white text-lg font-semibold bg-padeepBlue rounded-md ${mutation.isLoading && 'cursor-progress'}`}
-        >
-          Save
-        </button>
+        <div className="mt-8 space-x-4">
+          <button
+            onClick={() => handleSubmit()}
+            className={`py-2 px-8 text-white text-lg font-semibold bg-padeepBlue rounded-lg ${mutation.isLoading && 'cursor-progress'} hover:bg-opacity-75 transition duration-400 ease-in-out`}
+            >
+            Save
+          </button>
+          <button
+            onClick={() => router.back()}
+            className="py-2 px-8 text-white text-lg font-semibold bg-gray-400 rounded-lg hover:bg-opacity-75 transition duration-400 ease-in-out"
+          >
+            Cancel
+          </button>
+        </div>
       </main>
     </div>
   );

@@ -44,7 +44,7 @@ export default function UserProfile() {
     ["mine-articles"],
     getMine
   );
-  console.log(data);
+
   let draftCount = 0;
   let publishedCount = 0;
   let iconColor = "";
@@ -200,19 +200,19 @@ export default function UserProfile() {
             </div>
             <div className="text-padeepBlue">
               <p className="mb-9 flex justify-between">
-                <a href={data.user.socials.facebook} target="_blank">
+                <a href={data.user.socials.facebook ? data.user.socials.facebook : "#"} target="_blank">
                   {data.user.socials.facebook
                     ? data.user.socials.facebook
                     : "-"}
                 </a>
               </p>
               <p className="mb-9 flex justify-between">
-                <a href={data.user.socials.twitter} target="_blank">
+                <a href={data.user.socials.twitter ? data.user.socials.twitter : "#"} target="_blank">
                   {data.user.socials.twitter ? data.user.socials.twitter : "-"}
                 </a>
               </p>
               <p className="mb-9 flex justify-between">
-                <a href={data.user.socials.instagram} target="_blank">
+                <a href={data.user.socials.instagram ? data.user.socials.instagram : "#"} target="_blank">
                   {data.user.socials.instagram
                     ? data.user.socials.instagram
                     : "-"}
@@ -238,10 +238,10 @@ export default function UserProfile() {
             </div>
             <div className="mt-5">
               <p className="font-bold text-3xl">Writing for</p>
-              {data.user.role == "Editor-in-Chief" ? (
-                <div className="grid grid-cols-4">
-                  {categoryList.map((cat) => (
-                    <div className="flex font-semibold text-xl items-center my-4">
+              <div className="grid grid-cols-4">
+                {data.user.role == "Editor-in-Chief" ? (
+                  categoryList.map((cat, i) => (
+                    <div className="flex font-semibold text-xl items-center my-4" key={i}>
                       <DocumentTextIcon
                         className={`w-12 h-12 mr-4 ${
                           cat.value == "news"
@@ -259,11 +259,30 @@ export default function UserProfile() {
                       />
                       {cat.name}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div></div>
-              )}
+                  ))
+                ) : (
+                  data.user.categories.map((cat) => (
+                    <div className="flex font-semibold text-xl items-center my-4">
+                      <DocumentTextIcon 
+                        className={`w-12 h-12 mr-4 ${
+                          cat == "news"
+                            ? 'text-padeepBlue'
+                            : cat == "features"
+                            ? 'text-pinkaru'
+                            : cat == "community"
+                            ? 'text-redtagging'
+                            : cat == "cultures-lifestyle"
+                            ? 'text-yellowwallow'
+                            : cat == "so-lit"
+                            ? 'text-degreen'
+                            : cat == "nine-degrees" && 'text-black'
+                        }`}
+                      />
+                      {cat}
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
