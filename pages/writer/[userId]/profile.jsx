@@ -129,7 +129,7 @@ export default function UserProfile() {
                       >
                         <div className="flex items-center space-x-3">
                           <LogoutIcon className="w-7 h-7" />
-                          <div>Signout</div>
+                          <div>Sign out</div>
                         </div>
                       </button>
                     )}

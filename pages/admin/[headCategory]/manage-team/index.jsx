@@ -21,6 +21,11 @@ export default function index() {
     await axios.get("/api/user/").then((res) => res.data);
   const { data, isLoading } = useQuery(["userlist"], getUsers);
 
+  // filter users accrdg to session.user.categories
+  const filteredUsers = data?.users.filter((user) =>
+    user.categories.includes(session?.user.categories.toString())
+  );
+
   return (
     <div className="relative min-h-screen max-h-screen flex">
       <div className="bg-padeepBlue w-64 grid grid-rows-3">
@@ -72,8 +77,7 @@ export default function index() {
                       </tr>
                     </thead>
                     <tbody>
-                      {/* TODO filter users according to category of logged in user */}
-                      {data?.users.map((user) => (
+                      {filteredUsers.map((user) => (
                         <Link
                           href={`/admin/${session?.user.categories}/manage-team/edit/${user._id}`}
                         >

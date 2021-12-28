@@ -15,22 +15,18 @@ export default function Table({ all, mine, session }) {
   let onDraftsPage = false;
   let onTrashPage = false;
 
-  if (document.location.pathname.includes("admin")) {
+  if (document.location.pathname.includes("admin")) 
     onHomePage = true;
-  }
 
-  if (document.location.pathname.includes("articles")) {
+  if (document.location.pathname.includes("articles")) 
     onArticlesPage = true;
-  }
-
-  if (document.location.pathname.includes("drafts")) {
+  
+  if (document.location.pathname.includes("drafts")) 
     onDraftsPage = true;
-  }
 
-  if (document.location.pathname.includes("trash")) {
+  if (document.location.pathname.includes("trash")) 
     onTrashPage = true;
-  }
-
+  
   //filter articles
   const articles = new Array();
   if (onHomePage) {
